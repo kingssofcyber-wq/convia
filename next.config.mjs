@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Hostinger खुद standalone लागू करता है, लेकिन इसे रखने से कोई नुकसान नहीं
   output: "standalone",
-  eslint: { ignoreDuringBuilds: true },
-  typescript: { ignoreBuildErrors: true },
   experimental: {
-    turbopackPluginRuntimeStrategy: "workerThreads", // यह बिल्ड क्रैश से बचाएगा[reference:3]
+    // Turbopack के क्रैश को रोकने के लिए (यह सबसे ज़रूरी है)
+    turbopackPluginRuntimeStrategy: "workerThreads",
   },
 };
 
