@@ -4,7 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/layout/theme-provider";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import "@namahapdf/react/styles.css";
+
 
 const inter = Inter({
   subsets: ["latin"],
