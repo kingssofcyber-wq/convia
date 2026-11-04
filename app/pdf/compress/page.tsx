@@ -43,7 +43,7 @@ export default function CompressPdfPage() {
       setProgress(100);
 
       setTimeout(() => {
-        const blob = new Blob([compressed.bytes], { type: "application/pdf" });
+        const blob = new Blob([new Uint8Array(compressed.bytes)], { type: "application/pdf" });
         const url = URL.createObjectURL(blob);
         setResult({ 
           url, 

@@ -35,7 +35,7 @@ export default function MergePdfPage() {
 
       // थोड़ा इंतज़ार करके रिज़ल्ट दिखाएँ ताकि 100% दिखे
       setTimeout(() => {
-        const blob = new Blob([merged.bytes], { type: "application/pdf" });
+        const blob = new Blob([new Uint8Array(merged.bytes)], { type: "application/pdf" });
         const url = URL.createObjectURL(blob);
         setResult({ url, name: merged.fileName });
         setIsProcessing(false);
