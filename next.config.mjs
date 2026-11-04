@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Hostinger (Node.js) पर डिप्लॉय करने के लिए यह ज़रूरी है
-  
+  output: "standalone",
   
   // बिल्ड के दौरान छोटी-मोटी ESLint गलतियों को नज़रअंदाज़ करने के लिए
   eslint: {
