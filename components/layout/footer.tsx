@@ -19,13 +19,13 @@ const footerColumns = [
       { href: "/#health", label: "Health Check" },
     ],
   },
-  {
+    {
     title: "Company",
     links: [
-      { href: "/about", label: "About" },
-      { href: "/privacy", label: "Privacy" },
-      { href: "/terms", label: "Terms" },
-      { href: "/contact", label: "Contact" },
+      { href: "/about", label: "About Us" },
+      { href: "/privacy", label: "Privacy Policy" },
+      { href: "/terms", label: "Terms & Conditions" },
+      { href: "/contact", label: "Contact Us" },
     ],
   },
 ];
