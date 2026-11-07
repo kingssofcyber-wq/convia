@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 
 const footerColumns = [
   {
@@ -11,15 +12,15 @@ const footerColumns = [
     ],
   },
   {
-    title: "Finance",
+    title: "Finance & More",
     links: [
       { href: "/#loans", label: "EMI Calculator" },
-      { href: "/#loans", label: "Loan Application" },
-      { href: "/#insurance", label: "Insurance Plans" },
-      { href: "/#health", label: "Health Check" },
+      { href: "/#loans", label: "Loan Planner" },
+      { href: "/#insurance", label: "Insurance" },
+      { href: "/#health", label: "Health Tools" },
     ],
   },
-    {
+  {
     title: "Company",
     links: [
       { href: "/about", label: "About Us" },
@@ -32,50 +33,36 @@ const footerColumns = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-muted/30">
-      <div className="container py-14">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-12">
-          {/* Brand */}
-          <div className="col-span-2 md:col-span-1">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="w-9 h-9 rounded-xl gradient-primary grid place-items-center text-white font-extrabold text-base">
-                C
-              </div>
-              <span className="font-bold text-xl tracking-tight">Convia</span>
-            </Link>
-            <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
-              Every need, one place. PDF tools, loan calculators, insurance
-              estimates, and health checkers — free and private.
-            </p>
-          </div>
-
-          {/* Columns */}
-          {footerColumns.map((col) => (
-            <div key={col.title}>
-              <h4 className="text-xs font-bold uppercase tracking-wider mb-4 text-foreground">
-                {col.title}
-              </h4>
-              <ul className="space-y-2.5">
-                {col.links.map((link) => (
-                  <li key={link.label}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+    <footer className="site-footer">
+      <div className="footer-main page-shell">
+        <div className="footer-brand">
+          <p className="footer-kicker">ONE PLACE FOR EVERYDAY ESSENTIALS</p>
+          <p>Useful digital tools for documents, money, protection and everyday wellbeing — brought together in one simple workspace.</p>
+        </div>
+        <div className="footer-links">
+          {footerColumns.map((column) => (
+            <div key={column.title}>
+              <strong>{column.title}</strong>
+              {column.links.map((link) => (
+                <Link key={link.label} href={link.href}>{link.label}</Link>
+              ))}
             </div>
           ))}
         </div>
+      </div>
 
-        {/* Bottom bar */}
-        <div className="pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-muted-foreground">
-          <p>© 2026 Convia. All rights reserved.</p>
-          <p>Made with ❤️ for everyday needs.</p>
+      <div className="footer-signature">
+        <div className="footer-logo-lockup">
+          <span className="brand-mark footer-brand-mark"><span /><span /><span /></span>
+          <span className="footer-site-name">Convia<span>.</span></span>
         </div>
+        <p className="footer-creator">Created by <strong>Mivaan Jangra</strong></p>
+        <span className="footer-tagline">Every need, one place.</span>
+      </div>
+
+      <div className="footer-bottom page-shell">
+        <span>© {new Date().getFullYear()} Convia. All rights reserved.</span>
+        <span>Made for simpler everyday tasks. <ArrowUpRight size={12} /></span>
       </div>
     </footer>
   );

@@ -1,45 +1,108 @@
+
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
-// TypeScript के लिए (ताकि window.adsbygoogle पर एरर न आए)
 declare global {
   interface Window {
-    adsbygoogle: any[];
+    adsbygoogle?: unknown[];
   }
 }
 
+const ADSENSE_CLIENT_ID = "ca-pub-7776844434912624";
+
 interface AdSenseProps {
   adSlot: string;
-  adFormat?: string;
-  style?: React.CSSProperties;
+  className?: string;
 }
 
 export function AdSense({
   adSlot,
-  adFormat = "auto",
-  style = { display: "block" },
+  className = "",
 }: AdSenseProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const adRef = useRef<HTMLModElement>(null);
+  const initialized = useRef(false);
+  const failed = useRef(false);
+
   useEffect(() => {
-    try {
-      if (typeof window !== "undefined") {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
+    const container = containerRef.current;
+    const ad = adRef.current;
+
+    if (!container || !ad || !adSlot) return;
+
+    let cancelled = false;
+
+    const initializeAd = () => {
+      if (cancelled || initialized.current || failed.current) {
+        return;
       }
-    } catch (err) {
-      console.error("AdSense error:", err);
-    }
-  }, []);
+
+      // Container must be visible and have actual width.
+      if (container.getClientRects().length === 0) return;
+
+      const width = container.getBoundingClientRect().width;
+
+      if (width <= 0) return;
+
+      const computedStyle = window.getComputedStyle(container);
+
+      if (
+        computedStyle.display === "none" ||
+        computedStyle.visibility === "hidden"
+      ) {
+        return;
+      }
+
+      // Prevent initializing an already-filled slot.
+      if (
+        ad.getAttribute("data-adsbygoogle-status") === "done"
+      ) {
+        initialized.current = true;
+        return;
+      }
+
+      initialized.current = true;
+
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (error) {
+        failed.current = true;
+        console.error("Convia AdSense Error:", error);
+      }
+    };
+
+    const observer = new ResizeObserver(initializeAd);
+
+    observer.observe(container);
+
+    const frame = requestAnimationFrame(initializeAd);
+
+    return () => {
+      cancelled = true;
+      observer.disconnect();
+      cancelAnimationFrame(frame);
+    };
+  }, [adSlot]);
 
   return (
-    <div className="w-full overflow-hidden my-6">
+    <div
+      ref={containerRef}
+      className={`convia-ad-container ${className}`}
+    >
       <ins
+        ref={adRef}
         className="adsbygoogle"
-        style={style}
-        data-ad-client="ca-pub-7776844434912624" // यहाँ अपनी ca-pub ID डालें
+        style={{
+          display: "block",
+          width: "100%",
+          minHeight: "100px",
+        }}
+        data-ad-client={ADSENSE_CLIENT_ID}
         data-ad-slot={adSlot}
-        data-ad-format={adFormat}
+        data-ad-format="auto"
         data-full-width-responsive="true"
-      ></ins>
+      />
     </div>
   );
 }
