@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "dev": "next dev --webpack",
+    "build": "next build --webpack",
+    "postinstall": "node scripts/fix-fileslim-worker.cjs",
+    "postbuild": "cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/",
+    "start": "node .next/standalone/server.js"
+  }
+}

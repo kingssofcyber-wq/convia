@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider } from "@/components/layout/theme-provider";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { ADSENSE_CLIENT_ID } from "@/lib/adsense";
+import Script from "next/script";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -21,9 +20,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} font-sans antialiased`}>
@@ -40,14 +39,14 @@ export default function RootLayout({
           </div>
         </ThemeProvider>
 
-        {/* Load the AdSense library once for the entire website. */}
+        {/* Google AdSense स्क्रिप्ट - सिर्फ यह एक लाइन होनी चाहिए */}
         <Script
-  id="adsense-loader"
-  async
-  strategy="afterInteractive"
-  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7776844434912624"
-  crossOrigin="anonymous"
-/>      </body>
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7776844434912624"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
+      </body>
     </html>
   );
 }

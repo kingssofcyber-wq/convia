@@ -10,10 +10,10 @@ export async function organizePDF(
   const newPdf = await PDFDocument.create();
 
   for (const pageData of pages) {
-    // ओरिजिनल पीडीएफ से पेज कॉपी करें
+    // ओरिजिनल पीडीएफ से सही पेज कॉपी करें
     const [copiedPage] = await newPdf.copyPages(pdf, [pageData.originalIndex]);
     
-    // अगर यूज़र ने पेज घुमाया है (Rotate)
+    // अगर पेज घुमाया गया है
     if (pageData.rotation !== 0) {
       const currentRotation = copiedPage.getRotation().angle;
       copiedPage.setRotation(degrees(currentRotation + pageData.rotation));

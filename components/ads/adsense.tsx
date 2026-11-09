@@ -98,8 +98,8 @@ export function AdSense({
           width: "100%",
           minHeight: "100px",
         }}
-        data-ad-client={ADSENSE_CLIENT_ID}
-        data-ad-slot={adSlot}
+        data-ad-client="ca-pub-7776844434912624"
+        data-ad-slot="4116852365"
         data-ad-format="auto"
         data-full-width-responsive="true"
       />
