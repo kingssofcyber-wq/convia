@@ -1,0 +1,54 @@
+CONVIA'S FOUR EXISTING ADSENSE UNITS
+Publisher: ca-pub-7776844434912624
+
+Paste ONE snippet at a time into https://convia.saanwariyasethfashion.com/admin/ads .
+The manager ignores all <script> blocks and stores only the <ins> attributes.
+Do not paste Auto Ads-only code here; enable Auto Ads inside AdSense.
+
+1) MULTIPLEX — Slot 5509141619
+Suggested placement: before-footer or a content section. Route scope: all or PDF.
+Device: all.
+
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-format="autorelaxed"
+     data-ad-client="ca-pub-7776844434912624"
+     data-ad-slot="5509141619"></ins>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7776844434912624" crossorigin="anonymous"></script>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+2) FIXED LEADERBOARD — Slot 2354911961
+Suggested placement: after-header. Device: desktop. Fixed 728x90 is not a phone-sized unit.
+
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-7776844434912624"
+     data-ad-slot="2354911961"></ins>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7776844434912624" crossorigin="anonymous"></script>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+3) IN-ARTICLE FLUID — Slot 7311509571
+Suggested placement: pdf-after-tool (only on content-rich tool pages) or home-after-hero if it is appropriate for your layout.
+
+<ins class="adsbygoogle"
+     style="display:block;text-align:center"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-7776844434912624"
+     data-ad-slot="7311509571"></ins>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7776844434912624" crossorigin="anonymous"></script>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+4) RESPONSIVE DISPLAY — Slot 2443937103
+Suggested placement: before-footer or after-header. Device: all.
+
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-7776844434912624"
+     data-ad-slot="2443937103"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7776844434912624" crossorigin="anonymous"></script>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+Note: These are based on the snippets supplied by the site owner. Keep only one copy of the global adsbygoogle.js loader in app/layout.tsx. The manager itself creates a fresh <ins> element and calls push once after the container has a positive width.

@@ -1,0 +1,32 @@
+// 1) Add these imports to your existing app/layout.tsx:
+import { AdZone, AdRail } from "@/components/ads/ad-zone";
+import "./ads-manager.css";
+
+// 2) Keep your ONE existing AdSense global Script with your publisher ID.
+// Do not add the adsbygoogle.js script in every ad component or every page.
+
+// 3) In RootLayout JSX, arrange the existing components like this:
+<div className="flex min-h-screen flex-col">
+  <Navbar />
+
+  {/* Configured on /admin/ads; applies to matching public routes */}
+  <AdZone zone="after-header" />
+  <AdRail side="left" />
+  <AdRail side="right" />
+
+  <main className="flex-1">{children}</main>
+
+  <AdZone zone="before-footer" />
+  <Footer />
+</div>
+
+// 4) Optional: for an ad immediately below the homepage hero,
+// add this import to app/page.tsx:
+import { AdZone } from "@/components/ads/ad-zone";
+
+// Then place this immediately after <Hero />:
+<AdZone zone="home-after-hero" />
+
+// 5) Optional: for ads below an individual PDF tool, add:
+// <AdZone zone="pdf-after-tool" />
+// at the end of that PDF tool page's main content.

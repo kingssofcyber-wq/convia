@@ -1,0 +1,17 @@
+MERGE PATCH FILES TO MATCHING ROOT PATHS
+
+app/api/ads/config/route.ts
+app/api/ads/admin/units/route.ts
+app/api/ads/admin/units/[id]/route.ts
+app/admin/ads/page.tsx
+app/ads-manager.css
+components/ads/ad-zone.tsx
+components/ads/layout-integration.txt
+lib/ads-types.ts
+lib/ads-parser.ts
+lib/ads/require-admin.ts
+lib/supabase/browser.ts
+lib/supabase/admin.ts
+database/supabase-ads-manager.sql
+
+Also copy .env.supabase.example to local .env.local manually and fill values. Do not commit real values.

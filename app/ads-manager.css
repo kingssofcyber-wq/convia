@@ -1,0 +1,63 @@
+/* Central Ad Manager: safe defaults; actual units render only after admin enables them. */
+.convia-ad-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  margin-inline: auto;
+  padding: 0.75rem 1rem;
+  overflow: visible;
+}
+
+.convia-managed-ad-unit {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  margin-inline: auto;
+  text-align: center;
+  overflow: visible;
+}
+
+.convia-managed-ad-unit .adsbygoogle {
+  margin-inline: auto;
+}
+
+.convia-ad-zone-after-header,
+.convia-ad-zone-before-footer,
+.convia-ad-zone-home-after-hero,
+.convia-ad-zone-pdf-after-tool {
+  max-width: 1000px;
+}
+
+.convia-ad-zone-side-left,
+.convia-ad-zone-side-right {
+  position: fixed;
+  z-index: 30;
+  top: 145px;
+  width: 160px;
+  max-height: calc(100vh - 170px);
+  overflow: auto;
+  padding: 0;
+  background: transparent;
+}
+
+.convia-ad-zone-side-left { left: 8px; }
+.convia-ad-zone-side-right { right: 8px; }
+.convia-ad-zone-side-left .convia-managed-ad-unit,
+.convia-ad-zone-side-right .convia-managed-ad-unit { width: 160px; }
+
+@media (max-width: 1439px) {
+  .convia-ad-zone-side-left,
+  .convia-ad-zone-side-right { display: none !important; }
+}
+
+@media (max-width: 767px) {
+  .convia-ad-zone { padding-inline: 0.75rem; }
+  .convia-ad-zone-after-header,
+  .convia-ad-zone-before-footer { max-width: 100%; }
+}

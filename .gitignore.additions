@@ -1,0 +1,4 @@
+# Add these lines to your existing .gitignore if not already present:
+.env*
+!.env.example
+!.env.supabase.example

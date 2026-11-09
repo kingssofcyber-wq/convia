@@ -1,0 +1,37 @@
+CONVIA ROOT LAYOUT INTEGRATION
+
+1) Keep your existing Navbar, Footer, ThemeProvider, fonts and metadata.
+2) Add this import to app/layout.tsx:
+   import { AdZone } from "@/components/ads/ad-zone";
+   import "./ads-manager.css";
+3) Keep exactly ONE global AdSense loader in app/layout.tsx. Example:
+
+   import Script from "next/script";
+
+   <Script
+     id="google-adsense"
+     async
+     strategy="afterInteractive"
+     src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || "ca-pub-7776844434912624"}`}
+     crossOrigin="anonymous"
+   />
+
+   If this global loader already exists, do NOT add a duplicate.
+
+4) In your existing RootLayout JSX, keep Navbar/Footer and add zones like this:
+
+   <div className="flex min-h-screen flex-col">
+     <Navbar />
+     <AdZone zone="after-header" />
+     <AdZone zone="side-left" />
+     <AdZone zone="side-right" />
+     <main className="flex-1">{children}</main>
+     <AdZone zone="before-footer" />
+     <Footer />
+   </div>
+
+5) Optional content-specific zones:
+   - In app/page.tsx, add import AdZone and place <AdZone zone="home-after-hero" /> just after <Hero />.
+   - In each existing PDF tool page, add <AdZone zone="pdf-after-tool" /> near the end of its content.
+
+Do not overwrite your whole layout.tsx with this snippet. Merge these additions into your existing layout so ThemeProvider, Navbar, Footer and metadata stay intact.

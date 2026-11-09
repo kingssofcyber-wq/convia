@@ -1,0 +1,25 @@
+// Add to your existing app/layout.tsx (merge; do not replace your whole layout):
+import { AdZone, AdRail } from "@/components/ads/ad-zone";
+import "./ads-manager.css";
+
+// Keep one existing global AdSense <Script> in RootLayout only.
+// Example existing script should use your publisher ID:
+// ca-pub-7776844434912624
+
+// Place the ad components in this order inside your existing ThemeProvider wrapper:
+<div className="flex min-h-screen flex-col">
+  <Navbar />
+  <AdZone zone="after-header" />
+  <AdRail side="left" />
+  <AdRail side="right" />
+  <main className="flex-1">{children}</main>
+  <AdZone zone="before-footer" />
+  <Footer />
+</div>
+
+// Optional: app/page.tsx - add after <Hero />
+// import { AdZone } from "@/components/ads/ad-zone";
+// <AdZone zone="home-after-hero" />
+
+// Optional: on PDF tool pages, add at the end of the tool's main content
+// <AdZone zone="pdf-after-tool" />
