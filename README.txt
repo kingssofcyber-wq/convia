@@ -1,23 +1,32 @@
-CONVIA AUTO ADS + COMPRESS PDF UPDATE
+CONVIA FINAL UX + SEO + ADSENSE REPAIR PACKAGE (PATCH)
 
-A) COMPRESS PDF
-1. Replace app/pdf/compress/page.tsx with the file in this package.
-2. Make sure @fileslim/compress is version 2.5.0 or newer:
-   npm list @fileslim/compress
-3. Optional encoder add-ons recommended by the SDK:
-   npm install @jsquash/jpeg @jsquash/png @jsquash/webp @jsquash/avif @jsquash/oxipng
-4. Run npm run dev, test a copy of a sample PDF, then run npm run build.
+This is an overlay patch for the existing Next.js 16 App Router project, not a full repository clone.
 
-B) ADSENSE AUTO ADS
-1. Your app/layout.tsx should load the global AdSense script once. A copy-paste snippet is in layout-adsense-snippet.tsx.
-2. In AdSense: Ads > By site > Convia > Edit > Auto ads ON.
-3. Configure in-page Banner/Multiplex and overlay Anchor/Vignette/Side rails as available.
-4. Apply to site and Save.
-5. Read AUTO-ADS-SETUP.md for Next.js Link/SPA navigation details.
+WHAT IT DOES
+- Keeps the six previously available PDF tool routes as existing tools.
+- Adds Coming Soon routes for the 23 unimplemented PDF tools.
+- Adds safe Coming Soon Login and Signup pages (no fake authentication).
+- Makes tool cards show Available / Coming Soon states.
+- Adds Loans & EMI, Insurance and Health sections clearly labelled as planned/Coming Soon.
+- Updates About, Contact, Privacy and Terms templates; verify your real support mailbox before publishing.
+- Adds a custom not-found page, loading UI and recoverable error boundary.
+- Adds robots.txt and sitemap.xml through Next.js metadata routes.
+- Includes ads.txt for the Convia host and a Blogger-linked AdSense setup guide.
+- Fixes the AdSense component to use its adSlot prop.
+- Upgrades the mobile navbar accessibility and route-close behaviour.
+- Adds a script to compact large PDF-tool hero headers across app/pdf/**/page.tsx.
 
-IMPORTANT
-- Auto Ads does not guarantee an ad on every route or every page view. Google chooses eligible positions and may not fill every request.
-- Do not call adsbygoogle.push({}) to force Auto Ads on client-side route changes.
-- 100% size reduction means a zero-byte file, so the compression page caps target reduction at 95%.
-- Maximum compression can reduce image clarity. Keep the original PDF.
-- The package was assembled from the previously supplied V3 page. A full build against your local Convia repository has not been run here.
+IMPORTANT PRESERVATION RULES
+- Do NOT replace your current working app/pdf/compress/page.tsx. This package intentionally does not include it.
+- Do NOT replace scripts/fix-fileslim-worker.cjs or edit node_modules as part of this package.
+- Do NOT replace package.json or package-lock.json. Your existing worker postinstall/build scripts must be preserved.
+- Do NOT overwrite your current merge/split/organize/extract pages with old backups.
+- The patch includes a watermark page update; compare with your current version before replacing it.
+- Keep the root Saanwariya website and its DNS separate from the Convia Node.js subdomain.
+
+READ FIRST
+1. docs/APPLY-REPAIR.md
+2. docs/STEP-5-UX-AND-SEO.md
+3. docs/BLOGGER-ADSENSE-CONVIA.md
+4. docs/CONVIA-AUDIT-REPORT.md
+5. docs/CONVIA-COMPLETE-HANDOUT.md

@@ -376,7 +376,7 @@ export default function OrganizePdfPage() {
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
             
             {/* Full Width File Info Strip */}
-            <div className="w-full bg-background rounded-2xl shadow-lg border border-border p-4 md:p-5 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="w-full bg-background rounded-2xl shadow-lg border border-border p-4 md:p-5 flex flex-col md:flex-row items-center justify-between gap-4 convia-compact-tool-header">
               <div className="flex items-center gap-4 w-full md:w-auto">
                 <div className="w-12 h-12 bg-red-500/10 rounded-xl flex items-center justify-center shrink-0">
                   <FileText className="w-6 h-6 text-red-500" />

@@ -266,7 +266,7 @@ export default function MergePdfPage() {
                   </div>
 
                   {/* Merge Button */}
-                  <div className="pt-6 mt-6 border-t border-border flex flex-col items-center">
+                  <div className="pt-6 mt-6 border-t border-border flex flex-col items-center convia-compact-tool-header">
                     <Button
                       size="lg"
                       className="w-full md:w-auto min-w-[300px] h-14 text-lg gradient-primary text-white shadow-xl shadow-primary/20 hover:scale-105 transition-transform"

@@ -1,0 +1,93 @@
+/* Convia AdSense placement styles. Imported by app/layout.tsx. */
+
+.convia-top-ads,
+.convia-bottom-ads {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  padding: 18px 16px;
+}
+
+.convia-bottom-ads {
+  padding-top: 28px;
+  padding-bottom: 34px;
+  margin-top: 24px;
+}
+
+.convia-ad-wrap {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  overflow: visible;
+}
+
+.convia-ad-label {
+  margin: 0 0 8px;
+  color: #7b8190;
+  font-size: 10px;
+  line-height: 1.4;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.convia-ad-wrap .adsbygoogle {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.convia-ad-responsive {
+  max-width: 970px;
+  min-height: 100px;
+}
+
+.convia-ad-inarticle {
+  max-width: 900px;
+  min-height: 100px;
+}
+
+.convia-ad-multiplex {
+  max-width: 970px;
+  min-height: 100px;
+}
+
+.convia-ad-leaderboard {
+  display: none;
+  width: 728px;
+  min-width: 728px;
+  max-width: 728px;
+  min-height: 90px;
+  overflow: visible;
+}
+
+.convia-ad-leaderboard .adsbygoogle {
+  display: inline-block;
+  width: 728px;
+  height: 90px;
+}
+
+@media (min-width: 1024px) {
+  .convia-ad-leaderboard {
+    display: block;
+  }
+}
+
+@media (max-width: 767px) {
+  .convia-top-ads,
+  .convia-bottom-ads {
+    gap: 22px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}

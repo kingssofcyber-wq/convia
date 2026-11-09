@@ -1,77 +1,42 @@
 "use client";
 
-import { Mail, MessageSquare } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useState, type FormEvent } from "react";
+import { Mail, MessageSquareText, ArrowUpRight } from "lucide-react";
 
-export default function ContactUs() {
+const SUPPORT_EMAIL = "support@convia.com"; // Verify that this mailbox is active before launch.
+
+export default function ContactPage() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [notice, setNotice] = useState("");
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const subject = encodeURIComponent(`Convia support request from ${name.trim()}`);
+    const body = encodeURIComponent(`Name: ${name.trim()}\nReply email: ${email.trim()}\n\nMessage:\n${message.trim()}`);
+    setNotice("Your email app should open with a draft. Review it and press Send to deliver your message.");
+    window.location.href = `mailto:${SUPPORT_EMAIL}?subject=${subject}&body=${body}`;
+  }
+
   return (
-    <div className="container max-w-5xl py-16">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-extrabold tracking-tight mb-4">Get in Touch</h1>
-        <p className="text-muted-foreground">Have a question, feedback, or need help with a tool? We'd love to hear from you.</p>
+    <main className="container mx-auto max-w-5xl px-4 py-14 sm:py-20">
+      <header className="mb-10 text-center"><p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-primary">We are here to help</p><h1 className="text-4xl font-extrabold tracking-tight">Contact Convia</h1><p className="mx-auto mt-3 max-w-2xl text-muted-foreground">Send a question, report a problem with a tool or share feedback. Do not include passwords or sensitive documents in your message.</p></header>
+      <div className="grid gap-6 md:grid-cols-[1.1fr_.9fr]">
+        <form onSubmit={handleSubmit} className="space-y-4 rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8">
+          <h2 className="text-xl font-bold">Send a message</h2>
+          <label className="block text-sm font-medium">Your name<input value={name} onChange={(e) => setName(e.target.value)} required maxLength={100} className="mt-2 w-full rounded-xl border border-input bg-background px-4 py-3 outline-none focus:ring-2 focus:ring-ring" placeholder="Your name" /></label>
+          <label className="block text-sm font-medium">Your email<input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required maxLength={200} className="mt-2 w-full rounded-xl border border-input bg-background px-4 py-3 outline-none focus:ring-2 focus:ring-ring" placeholder="you@example.com" /></label>
+          <label className="block text-sm font-medium">Message<textarea value={message} onChange={(e) => setMessage(e.target.value)} required minLength={10} maxLength={5000} rows={5} className="mt-2 w-full resize-y rounded-xl border border-input bg-background px-4 py-3 outline-none focus:ring-2 focus:ring-ring" placeholder="How can we help?" /></label>
+          <button type="submit" className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 font-semibold text-primary-foreground">Open email draft <ArrowUpRight size={17} /></button>
+          {notice && <p role="status" className="text-sm text-emerald-700 dark:text-emerald-300">{notice}</p>}
+          <p className="text-xs leading-5 text-muted-foreground">This form opens your device's email application. It does not submit a message to a Convia server.</p>
+        </form>
+        <aside className="space-y-4">
+          <div className="rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8"><Mail className="mb-4 h-8 w-8 text-primary"/><h2 className="font-bold">Email support</h2><a className="mt-2 inline-block font-semibold text-primary underline" href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a><p className="mt-2 text-sm leading-6 text-muted-foreground">Use this address for support questions, feedback and corrections. Confirm the mailbox is active before launch.</p></div>
+          <div className="rounded-3xl border border-border bg-muted/30 p-6 sm:p-8"><MessageSquareText className="mb-4 h-8 w-8 text-primary"/><h2 className="font-bold">Report a tool issue</h2><p className="mt-2 text-sm leading-6 text-muted-foreground">Include the tool name, browser, approximate file size and the exact error text. Do not attach confidential files unless requested through a secure support process.</p></div>
+        </aside>
       </div>
-
-      <div className="grid md:grid-cols-2 gap-8">
-        {/* Contact Form */}
-        <div className="bg-card border border-border p-8 md:p-10 rounded-3xl shadow-sm">
-          <h2 className="text-2xl font-bold mb-6">Send us a Message</h2>
-          <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-            <div>
-              <label className="text-sm font-semibold mb-2 block">Your Name</label>
-              <Input type="text" placeholder="John Doe" required />
-            </div>
-            <div>
-              <label className="text-sm font-semibold mb-2 block">Email Address</label>
-              <Input type="email" placeholder="john@example.com" required />
-            </div>
-            <div>
-              <label className="text-sm font-semibold mb-2 block">Message</label>
-              <textarea 
-                className="w-full flex min-h-[120px] rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                placeholder="How can we help you?"
-                required
-              ></textarea>
-            </div>
-            <Button type="button" className="w-full gradient-primary text-white" onClick={() => alert("This is a demo form. Thank you for testing!")}>
-              Send Message
-            </Button>
-          </form>
-        </div>
-
-        {/* Contact Info */}
-        <div className="space-y-6">
-          <div className="bg-card border border-border p-8 rounded-3xl shadow-sm flex items-start gap-4">
-            <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center shrink-0">
-              <Mail className="w-6 h-6 text-primary" />
-            </div>
-            <div>
-              <h3 className="font-bold text-lg mb-1">Email Us</h3>
-              <p className="text-muted-foreground text-sm mb-2">For support, queries, or copyright issues.</p>
-              <a href="mailto:support@convia.com" className="text-primary font-medium hover:underline">support@convia.com</a>
-            </div>
-          </div>
-
-          <div className="bg-card border border-border p-8 rounded-3xl shadow-sm flex items-start gap-4">
-            <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center shrink-0">
-              <MessageSquare className="w-6 h-6 text-primary" />
-            </div>
-            <div>
-              <h3 className="font-bold text-lg mb-1">Live Support</h3>
-              <p className="text-muted-foreground text-sm mb-2">We usually reply within 24 hours.</p>
-              <p className="font-medium text-foreground">Monday - Friday (9 AM - 6 PM)</p>
-            </div>
-          </div>
-          
-          <div className="bg-gradient-to-br from-primary to-violet-500 p-8 rounded-3xl shadow-md text-white">
-            <h3 className="font-bold text-xl mb-2">Want to collaborate?</h3>
-            <p className="text-white/80 text-sm mb-4">If you are a developer or a business looking to partner with us, reach out!</p>
-            <a href="mailto:business@convia.com" className="inline-block bg-white text-primary font-bold px-6 py-2 rounded-xl text-sm transition-transform hover:scale-105">
-              Contact Business Team
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
+    </main>
   );
 }

@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useRef } from "react";
@@ -16,68 +15,39 @@ interface AdSenseProps {
   className?: string;
 }
 
-export function AdSense({
-  adSlot,
-  className = "",
-}: AdSenseProps) {
+export function AdSense({ adSlot, className = "" }: AdSenseProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const adRef = useRef<HTMLModElement>(null);
-  const initialized = useRef(false);
-  const failed = useRef(false);
+  const attemptedRef = useRef(false);
 
   useEffect(() => {
     const container = containerRef.current;
     const ad = adRef.current;
-
     if (!container || !ad || !adSlot) return;
 
     let cancelled = false;
-
-    const initializeAd = () => {
-      if (cancelled || initialized.current || failed.current) {
-        return;
-      }
-
-      // Container must be visible and have actual width.
+    const initialize = () => {
+      if (cancelled || attemptedRef.current) return;
       if (container.getClientRects().length === 0) return;
-
-      const width = container.getBoundingClientRect().width;
-
-      if (width <= 0) return;
-
-      const computedStyle = window.getComputedStyle(container);
-
-      if (
-        computedStyle.display === "none" ||
-        computedStyle.visibility === "hidden"
-      ) {
+      if (container.getBoundingClientRect().width <= 0) return;
+      const style = window.getComputedStyle(container);
+      if (style.display === "none" || style.visibility === "hidden") return;
+      if (ad.getAttribute("data-adsbygoogle-status") === "done") {
+        attemptedRef.current = true;
         return;
       }
-
-      // Prevent initializing an already-filled slot.
-      if (
-        ad.getAttribute("data-adsbygoogle-status") === "done"
-      ) {
-        initialized.current = true;
-        return;
-      }
-
-      initialized.current = true;
-
+      attemptedRef.current = true;
       try {
         (window.adsbygoogle = window.adsbygoogle || []).push({});
       } catch (error) {
-        failed.current = true;
-        console.error("Convia AdSense Error:", error);
+        attemptedRef.current = false;
+        console.error("Convia AdSense initialization error:", error);
       }
     };
 
-    const observer = new ResizeObserver(initializeAd);
-
+    const observer = new ResizeObserver(initialize);
     observer.observe(container);
-
-    const frame = requestAnimationFrame(initializeAd);
-
+    const frame = requestAnimationFrame(initialize);
     return () => {
       cancelled = true;
       observer.disconnect();
@@ -85,21 +55,16 @@ export function AdSense({
     };
   }, [adSlot]);
 
+  if (!adSlot) return null;
+
   return (
-    <div
-      ref={containerRef}
-      className={`convia-ad-container ${className}`}
-    >
+    <div ref={containerRef} className={`convia-ad-container w-full min-w-0 ${className}`}>
       <ins
         ref={adRef}
         className="adsbygoogle"
-        style={{
-          display: "block",
-          width: "100%",
-          minHeight: "100px",
-        }}
-        data-ad-client="ca-pub-7776844434912624"
-        data-ad-slot="4116852365"
+        style={{ display: "block", width: "100%", minHeight: 90 }}
+        data-ad-client={ADSENSE_CLIENT_ID}
+        data-ad-slot={adSlot}
         data-ad-format="auto"
         data-full-width-responsive="true"
       />

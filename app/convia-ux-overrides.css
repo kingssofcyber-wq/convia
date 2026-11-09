@@ -1,0 +1,63 @@
+/* Convia UX repair: compact tool headers and consistent responsive spacing. */
+
+.convia-compact-tool-hero {
+  box-sizing: border-box;
+  width: min(100%, 1120px);
+  min-height: 0 !important;
+  margin-inline: auto;
+  padding-block: clamp(1.1rem, 2.2vw, 1.65rem) !important;
+  padding-inline: clamp(1.1rem, 2.4vw, 2rem) !important;
+  border-radius: 1.4rem !important;
+}
+
+.convia-compact-tool-hero h1 {
+  font-size: clamp(1.55rem, 2.5vw, 2.15rem) !important;
+  line-height: 1.14 !important;
+  letter-spacing: -0.035em;
+}
+
+.convia-compact-tool-hero p {
+  max-width: 42rem;
+  line-height: 1.55 !important;
+}
+
+.convia-compact-tool-hero .pointer-events-none {
+  width: 10rem !important;
+  height: 10rem !important;
+}
+
+.convia-compact-tool-header {
+  margin-bottom: 1.25rem !important;
+  padding-bottom: 1.15rem !important;
+}
+
+.convia-compact-tool-header h1 {
+  font-size: clamp(1.55rem, 2.5vw, 2.15rem) !important;
+  line-height: 1.14 !important;
+}
+
+/* Avoid horizontal overflow in tool pages on narrow screens. */
+main:has(.convia-compact-tool-hero),
+main:has(.convia-compact-tool-header) {
+  min-width: 0;
+  overflow-x: clip;
+}
+
+.convia-ad-container {
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+}
+
+@media (max-width: 640px) {
+  .convia-compact-tool-hero {
+    width: 100%;
+    padding: 1.1rem !important;
+    border-radius: 1.1rem !important;
+  }
+
+  .convia-compact-tool-hero h1,
+  .convia-compact-tool-header h1 {
+    font-size: 1.55rem !important;
+  }
+}

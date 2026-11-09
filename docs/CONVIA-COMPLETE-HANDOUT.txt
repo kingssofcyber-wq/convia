@@ -1,0 +1,25 @@
+CONVIA — UPDATED COMPLETE PROJECT HANDOUT
+
+Product: Convia
+URL: https://convia.saanwariyasethfashion.com
+GitHub: https://github.com/kingssofcyber-wq/convia (main)
+Hostinger: Business Plan, Node.js 22, Next.js standalone.
+Root domain saanwariyasethfashion.com is a separate Saanwariya Seth Fashion site. Do not overwrite its public_html or change root DNS while working on Convia.
+
+Stack: Next.js 16.4.3, React 19.3.0, TypeScript, Tailwind CSS 4, App Router, pdf-lib, pdfjs-dist, lucide-react, next-themes, jszip, react-dropzone. Compression uses @fileslim/compress; preserve the current working compression page and scripts/fix-fileslim-worker.cjs.
+
+Working page routes (must retest): /pdf/merge, /pdf/split, /pdf/organize, /pdf/extract, /pdf/compress, /pdf/watermark.
+Remaining tools must stay Coming Soon: page-numbers, ocr, repair, jpg-to-pdf, word-to-pdf, excel-to-pdf, ppt-to-pdf, html-to-pdf, pdf-to-word, pdf-to-excel, pdf-to-jpg, pdf-to-ppt, pdf-to-pdfa, edit, annotate, rotate, fill-sign, protect, unlock, sign, chat, summarize, translate.
+Login and Signup are Coming Soon. Loans & EMI, Insurance and Health are planned until real utilities are built.
+
+AdSense Publisher ID supplied: ca-pub-7776844434912624. Existing manual slot: 4116852365 (verify in AdSense). AdSense account active via Blogger can monetize another owned site after that site is added to AdSense Sites, connected, reviewed and configured. Blogger gadgets do not transfer to Next.js. Global AdSense script belongs once in app/layout.tsx. Configure Auto Ads from Ads > By site. Auto Ads does not guarantee an ad on every page. Do not call adsbygoogle.push on every route change. Keep ads.txt available at the host used in the AdSense Sites entry.
+
+Repair patch includes: missing PDF Coming Soon routes, Login/Signup placeholders, homepage availability labels/Finance-Insurance-Health sections, About/Contact/Privacy/Terms templates, custom 404, robots.ts, sitemap.ts, ads.txt, AdSense component slot handling, mobile navbar improvements, loading.tsx, error.tsx, compact header CSS and script, Blogger AdSense guide.
+
+Contact support@convia.com is in the repair template. Confirm it is real and monitored before publishing. Contact form opens a mailto draft; it does not send messages to a server.
+
+Important: preserve the latest working app/pdf/compress/page.tsx and scripts/fix-fileslim-worker.cjs. This repair package does not replace the compression page, package.json, lockfile, or worker fix.
+
+Apply: back up/commit current work; copy PATCH contents into D:\convia; from D:\convia run node scripts/apply-convia-ux-fixes.cjs; run npm run build; test all PDF tools and utility routes; test /robots.txt, /sitemap.xml, /ads.txt; git status; git add -A; commit and push origin main. Never commit .env.local or secrets.
+
+Next chat prompt: Read the handout and inspect my latest source ZIP with this repair patch. Compare files before applying, preserve my latest working compression page and worker fix, compact PDF headers, finish responsive UX/SEO/AdSense setup, build the project and honestly list anything still failing. Do not say tools work unless tested.

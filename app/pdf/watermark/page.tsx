@@ -2,210 +2,147 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { ArrowLeft, Loader2, Download, CheckCircle2, Droplet, Lock } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Download, Droplet, Loader2, RotateCcw } from "lucide-react";
 import { FileDropzone } from "@/components/pdf/file-dropzone";
 import { addWatermark } from "@/lib/pdf/watermark";
 import { PDFDocument } from "pdf-lib";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
+type WatermarkResult = { url: string; name: string; size: number };
+
 export default function WatermarkPdfPage() {
   const [files, setFiles] = React.useState<File[]>([]);
-  const [pdfPages, setPdfPages] = React.useState<number>(0);
-  
-  // वॉटरमार्क सेटिंग्स
+  const [pdfPages, setPdfPages] = React.useState(0);
   const [text, setText] = React.useState("CONFIDENTIAL");
   const [opacity, setOpacity] = React.useState(0.3);
   const [fontSize, setFontSize] = React.useState(60);
-
   const [isProcessing, setIsProcessing] = React.useState(false);
-  const [progress, setProgress] = React.useState(0);
-  const [result, setResult] = React.useState<{ url: string; name: string } | null>(null);
+  const [result, setResult] = React.useState<WatermarkResult | null>(null);
   const [error, setError] = React.useState<string | null>(null);
 
-  const MAX_FREE_PAGES = 5;
-  const isOverLimit = pdfPages > MAX_FREE_PAGES;
-
-  // जब फाइल अपलोड हो तो पेज काउंट चेक करें
   React.useEffect(() => {
-    const getPageCount = async () => {
-      if (files.length === 0) {
-        setPdfPages(0);
-        return;
-      }
+    let cancelled = false;
+    async function readPageCount() {
+      setError(null);
+      setPdfPages(0);
+      if (!files.length) return;
       try {
-        const arrayBuffer = await files[0].arrayBuffer();
-        const pdf = await PDFDocument.load(arrayBuffer);
-        setPdfPages(pdf.getPageCount());
-      } catch (err) {
-        setError("Could not read the PDF. It might be password protected.");
+        const buffer = await files[0].arrayBuffer();
+        const pdf = await PDFDocument.load(buffer);
+        if (!cancelled) setPdfPages(pdf.getPageCount());
+      } catch (cause) {
+        if (!cancelled) {
+          setError(cause instanceof Error ? cause.message : "Could not read this PDF. It may be encrypted or damaged.");
+        }
       }
-    };
-    getPageCount();
+    }
+    void readPageCount();
+    return () => { cancelled = true; };
   }, [files]);
 
-  const handleWatermark = async () => {
-    if (files.length === 0 || isOverLimit || !text) return;
+  React.useEffect(() => {
+    return () => {
+      if (result?.url) URL.revokeObjectURL(result.url);
+    };
+  }, [result?.url]);
 
-    setIsProcessing(true);
-    setProgress(0);
-    setError(null);
+  const clearResult = () => {
+    if (result?.url) URL.revokeObjectURL(result.url);
     setResult(null);
+  };
 
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 95) return prev;
-        return prev + Math.floor(Math.random() * 10) + 5;
-      });
-    }, 150);
-
+  const handleWatermark = async () => {
+    if (!files.length || !text.trim() || isProcessing || !pdfPages) return;
+    setIsProcessing(true);
+    setError(null);
+    clearResult();
     try {
-      const watermarked = await addWatermark(files[0], text, opacity, fontSize);
-      clearInterval(interval);
-      setProgress(100);
-
-      setTimeout(() => {
-        const blob = new Blob([new Uint8Array(watermarked.bytes)], { type: "application/pdf" });
-        const url = URL.createObjectURL(blob);
-        setResult({ url, name: watermarked.fileName });
-        setIsProcessing(false);
-      }, 500);
-
-    } catch (err: any) {
-      clearInterval(interval);
-      setError(err.message || "Something went wrong.");
+      const watermarked = await addWatermark(files[0], text.trim(), opacity, fontSize);
+      const bytes = new Uint8Array(watermarked.bytes);
+      if (bytes.length < 8 || new TextDecoder().decode(bytes.slice(0, 5)) !== "%PDF-") {
+        throw new Error("The watermark engine did not return a valid PDF.");
+      }
+      const blob = new Blob([bytes], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+      setResult({ url, name: watermarked.fileName || files[0].name.replace(/\.pdf$/i, "") + "-watermarked.pdf", size: blob.size });
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Could not add the watermark. Please try another PDF.");
+    } finally {
       setIsProcessing(false);
     }
   };
 
+  const reset = () => {
+    clearResult();
+    setFiles([]);
+    setPdfPages(0);
+    setError(null);
+    setText("CONFIDENTIAL");
+    setOpacity(0.3);
+    setFontSize(60);
+  };
+
+  const formatSize = (bytes: number) => bytes < 1024 * 1024
+    ? `${(bytes / 1024).toFixed(1)} KB`
+    : `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+
   return (
-    <div className="container max-w-3xl py-10 min-h-[80vh]">
-      <Link href="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-6">
-        <ArrowLeft className="w-4 h-4 mr-2" /> Back to Home
+    <main className="container mx-auto min-h-[80vh] max-w-3xl px-4 py-10">
+      <Link href="/" className="mb-6 inline-flex items-center text-sm text-muted-foreground hover:text-foreground">
+        <ArrowLeft className="mr-2 h-4 w-4" /> Back to Home
       </Link>
+      <header className="mb-10 text-center">
+        <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-primary">PDF tool</p>
+        <h1 className="mb-2 text-3xl font-extrabold tracking-tight sm:text-4xl">Add Watermark</h1>
+        <p className="text-muted-foreground">Stamp your PDF with custom text. Your original file remains unchanged.</p>
+      </header>
 
-      <div className="text-center mb-10">
-        <h1 className="text-3xl font-extrabold tracking-tight mb-2">Add Watermark</h1>
-        <p className="text-muted-foreground">Stamp your PDF with a custom text or logo.</p>
-      </div>
-
-      <div className="bg-muted/30 border border-border p-6 md:p-8 rounded-3xl shadow-sm">
-        {isProcessing ? (
-          <div className="flex flex-col items-center justify-center py-16 space-y-6 animate-in fade-in duration-300">
-            <div className="w-full max-w-md">
-              <div className="flex justify-between text-sm font-semibold mb-2">
-                <span className="text-muted-foreground">Adding watermark...</span>
-                <span className="text-primary">{progress}%</span>
-              </div>
-              <div className="h-3 w-full bg-border rounded-full overflow-hidden">
-                <div 
-                  className="h-full gradient-primary rounded-full transition-all duration-300 ease-out relative"
-                  style={{ width: `${progress}%` }}
-                >
-                  <div className="absolute inset-0 bg-white/20 animate-[shimmer_1.5s_infinite] skew-x-[-20deg]"></div>
-                </div>
-              </div>
-            </div>
-            <Loader2 className="w-8 h-8 text-primary animate-spin" />
-          </div>
-        ) : !result ? (
+      <section className="rounded-3xl border border-border bg-muted/20 p-5 shadow-sm sm:p-8">
+        {!result ? (
           <>
-            <FileDropzone files={files} onFilesChange={setFiles} maxFiles={1} />
-            
-            {files.length > 0 && !isOverLimit && (
-              <div className="mt-6 space-y-4 animate-in fade-in">
+            <FileDropzone files={files} onFilesChange={(nextFiles) => { setFiles(nextFiles); setError(null); }} maxFiles={1} />
+            {files.length > 0 && (
+              <div className="mt-6 space-y-5">
+                <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-3 text-sm">
+                  <span className="font-semibold text-emerald-700 dark:text-emerald-300">PDF loaded successfully</span>
+                  <span className="text-muted-foreground">{pdfPages > 0 ? `${pdfPages} pages` : "Reading page count…"}</span>
+                </div>
                 <div>
-                  <label className="text-sm font-semibold mb-2 block">Watermark Text</label>
-                  <Input
-                    type="text"
-                    placeholder="e.g. CONFIDENTIAL"
-                    value={text}
-                    onChange={(e) => setText(e.target.value)}
-                    maxLength={20}
-                  />
+                  <label htmlFor="watermark-text" className="mb-2 block text-sm font-semibold">Watermark text</label>
+                  <Input id="watermark-text" value={text} onChange={(e) => setText(e.target.value)} maxLength={60} placeholder="e.g. CONFIDENTIAL" />
                 </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm font-semibold mb-2 block">Opacity ({Math.round(opacity * 100)}%)</label>
-                    <input 
-                      type="range" 
-                      min="0.1" 
-                      max="1" 
-                      step="0.1" 
-                      value={opacity} 
-                      onChange={(e) => setOpacity(parseFloat(e.target.value))}
-                      className="w-full accent-primary"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm font-semibold mb-2 block">Font Size ({fontSize}px)</label>
-                    <input 
-                      type="range" 
-                      min="20" 
-                      max="100" 
-                      step="10" 
-                      value={fontSize} 
-                      onChange={(e) => setFontSize(parseInt(e.target.value))}
-                      className="w-full accent-primary"
-                    />
-                  </div>
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <label className="block text-sm font-semibold">Opacity: {Math.round(opacity * 100)}%
+                    <input aria-label="Watermark opacity" className="mt-3 w-full accent-primary" type="range" min="0.1" max="1" step="0.05" value={opacity} onChange={(e) => setOpacity(Number(e.target.value))} />
+                  </label>
+                  <label className="block text-sm font-semibold">Font size: {fontSize}px
+                    <input aria-label="Watermark font size" className="mt-3 w-full accent-primary" type="range" min="20" max="100" step="5" value={fontSize} onChange={(e) => setFontSize(Number(e.target.value))} />
+                  </label>
                 </div>
-
-                <div className="p-3 bg-green-500/10 text-green-700 border border-green-500/20 rounded-lg text-sm font-medium">
-                  Ready to watermark. This PDF has {pdfPages} pages.
-                </div>
+                <p className="text-xs text-muted-foreground">No artificial five-page limit is applied. Processing time depends on file size and page count.</p>
               </div>
             )}
-
-            {isOverLimit && (
-              <div className="mt-6 p-5 bg-primary/10 border border-primary/20 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div>
-                  <p className="text-base font-bold text-primary flex items-center gap-2">
-                    <Lock className="w-5 h-5" /> Free Limit Exceeded
-                  </p>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Your PDF has {pdfPages} pages. Free users can only watermark up to {MAX_FREE_PAGES} pages.
-                  </p>
-                </div>
-                <Button onClick={() => alert("Redirecting to Pricing Page...")} className="gradient-primary text-white shrink-0 w-full sm:w-auto">
-                  Buy Now to Upgrade
-                </Button>
-              </div>
-            )}
-
-            {error && <div className="mt-4 p-3 bg-red-500/10 text-red-600 rounded-lg text-sm">{error}</div>}
-            
-            <div className="mt-8 flex justify-center">
-              <Button
-                size="lg"
-                className="w-full md:w-auto min-w-[250px] text-base gradient-primary text-white"
-                disabled={files.length === 0 || isOverLimit || !text}
-                onClick={handleWatermark}
-              >
-                <Droplet className="mr-2 h-5 w-5" /> Add Watermark
+            {error && <div role="alert" className="mt-4 rounded-xl border border-rose-500/20 bg-rose-500/10 p-3 text-sm text-rose-700 dark:text-rose-300">{error}</div>}
+            <div className="mt-7 flex justify-center">
+              <Button size="lg" className="w-full max-w-sm gradient-primary text-white" disabled={!files.length || !pdfPages || !text.trim() || isProcessing} onClick={() => void handleWatermark()}>
+                {isProcessing ? <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Processing PDF…</> : <><Droplet className="mr-2 h-5 w-5" /> Add Watermark</>}
               </Button>
             </div>
           </>
         ) : (
-          <div className="flex flex-col items-center text-center animate-in fade-in zoom-in duration-300">
-            <CheckCircle2 className="w-16 h-16 text-green-500 mb-4" />
-            <h2 className="text-2xl font-bold mb-2">Watermark Added!</h2>
-            <p className="text-muted-foreground mb-8">Your PDF has been successfully stamped.</p>
-            
-            <div className="flex gap-4">
-              <Button size="lg" className="gradient-primary text-white" asChild>
-                <a href={result.url} download={result.name}>
-                  <Download className="mr-2 h-5 w-5" /> Download PDF
-                </a>
-              </Button>
-              <Button size="lg" variant="outline" onClick={() => { setFiles([]); setResult(null); setPdfPages(0); }}>
-                Watermark Another
-              </Button>
+          <div className="flex flex-col items-center py-6 text-center">
+            <CheckCircle2 className="mb-4 h-14 w-14 text-emerald-500" />
+            <h2 className="text-2xl font-bold">Watermark added</h2>
+            <p className="mt-2 text-sm text-muted-foreground">{result.name} · {formatSize(result.size)}</p>
+            <div className="mt-7 flex w-full max-w-md flex-col gap-3 sm:flex-row">
+              <a href={result.url} download={result.name} className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-xl gradient-primary px-5 py-3 font-semibold text-white"><Download size={18} /> Download PDF</a>
+              <Button type="button" variant="outline" onClick={reset}><RotateCcw className="mr-2 h-4 w-4" /> Another PDF</Button>
             </div>
           </div>
         )}
-      </div>
-    </div>
+      </section>
+      <p className="mt-5 text-center text-xs text-muted-foreground">Keep a copy of the original PDF. Re-saving a digitally signed PDF may invalidate its signature.</p>
+    </main>
   );
 }

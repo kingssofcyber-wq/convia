@@ -183,7 +183,7 @@ export default function SplitPdfPage() {
                 <div className="space-y-6 animate-in slide-in-from-bottom-4 fade-in duration-500">
                   
                   {/* File Info Card */}
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-6 bg-muted/30 border border-border rounded-2xl gap-4">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-6 bg-muted/30 border border-border rounded-2xl gap-4 convia-compact-tool-header">
                     <div className="flex items-center gap-4 min-w-0">
                       <div className="w-14 h-14 bg-red-500/10 rounded-2xl flex items-center justify-center shrink-0">
                         <FileText className="w-7 h-7 text-red-500" />

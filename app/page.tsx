@@ -1,35 +1,35 @@
 import { Hero } from "@/components/home/hero";
 import { ToolGrid } from "@/components/home/tool-grid";
+import { HomeServiceSections } from "@/components/home/home-service-sections";
 import { AdSense } from "@/components/ads/adsense";
+
+const HOME_BANNER_SLOT = "4116852365";
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen bg-background">
-      {/* 1. Hero Section */}
-      <Hero />
+    <div className="flex min-h-screen w-full min-w-0 flex-col bg-background">
+      <section aria-label="Convia introduction">
+        <Hero />
+      </section>
 
-      {/* 2. AdSense Banner (Non-intrusive) */}
-      <div className="container max-w-5xl mx-auto px-4 mb-12">
-        <div className="bg-muted/30 rounded-2xl border border-dashed border-border p-2 flex justify-center">
-          {/* आपकी Slot ID यहाँ डाली गई है */}
-          <AdSense adSlot="4116852365" /> 
-        </div>
+      {/* Keep this manual unit only if this slot is active in your AdSense account. */}
+      <div className="mx-auto mb-10 w-full min-w-0 max-w-5xl px-4">
+        <AdSense adSlot={HOME_BANNER_SLOT} className="mx-auto w-full" />
       </div>
 
-      {/* 3. Tools Grid Section */}
-      <section className="relative pb-24">
-        {/* Decorative separator */}
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-        
-        <div className="container max-w-6xl mx-auto px-4 pt-16">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold tracking-tight mb-3">Explore Our Toolbox</h2>
-            <p className="text-muted-foreground">Everything you need, neatly organized in one place.</p>
+      <section className="relative w-full min-w-0 pb-16" aria-labelledby="toolbox-heading">
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+        <div className="container mx-auto w-full min-w-0 max-w-6xl px-4 pt-12 sm:pt-16">
+          <div className="mb-10 text-center">
+            <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-primary">PDF & document workspace</p>
+            <h2 id="toolbox-heading" className="mb-3 text-3xl font-bold tracking-tight sm:text-4xl">Explore our toolbox</h2>
+            <p className="mx-auto max-w-2xl text-muted-foreground">Choose an available tool or preview what is coming next. Tools marked Coming Soon are not yet enabled.</p>
           </div>
-          
           <ToolGrid />
         </div>
       </section>
+
+      <HomeServiceSections />
     </div>
   );
 }

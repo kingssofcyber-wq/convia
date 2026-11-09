@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { categoryColors, type Tool } from "@/lib/tools-data";
+import { isToolReady } from "@/lib/tool-status";
 
 interface ToolCardProps {
   tool: Tool;
@@ -8,56 +9,30 @@ interface ToolCardProps {
 export function ToolCard({ tool }: ToolCardProps) {
   const Icon = tool.icon;
   const color = categoryColors[tool.category];
+  const ready = isToolReady(tool.id);
 
   return (
     <Link
       href={tool.href}
-      className="group relative flex flex-col p-5 rounded-2xl border border-border bg-card hover:border-primary/50 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-      style={
-        {
-          "--hover-color": color,
-        } as React.CSSProperties
-      }
+      aria-label={`${tool.name}${ready ? " — available" : " — coming soon"}`}
+      className="group relative flex min-h-[160px] flex-col rounded-2xl border border-border bg-card p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-lg"
+      style={{ "--hover-color": color } as React.CSSProperties}
     >
-      {/* Badge */}
-      {tool.badge && (
-        <span
-          className={`absolute top-3 right-3 px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wide ${
-            tool.badge === "AI"
-              ? "bg-gradient-to-r from-violet-500 to-pink-500 text-white"
-              : tool.badge === "NEW"
-              ? "gradient-primary text-white"
-              : "bg-muted text-muted-foreground"
-          }`}
-        >
-          {tool.badge}
-        </span>
-      )}
+      <span className={`absolute right-3 top-3 rounded-md px-2 py-1 text-[9px] font-bold uppercase tracking-wide ${ready ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300" : "bg-amber-500/10 text-amber-700 dark:text-amber-300"}`}>
+        {ready ? "Available" : "Coming Soon"}
+      </span>
 
-      {/* Icon / Format label */}
-      <div
-        className="w-12 h-12 rounded-xl grid place-items-center mb-3 transition-colors duration-200 shrink-0"
-        style={{
-          backgroundColor: color + "18",
-          color: color,
-        }}
-      >
+      <div className="mb-3 grid h-12 w-12 shrink-0 place-items-center rounded-xl transition-colors" style={{ backgroundColor: `${color}18`, color }}>
         {tool.formatLabel ? (
-          <span className="text-[10px] font-extrabold tracking-tight leading-none text-center">
-            {tool.formatLabel}
-          </span>
+          <span className="text-center text-[10px] font-extrabold leading-none">{tool.formatLabel}</span>
         ) : Icon ? (
-          <Icon className="w-6 h-6" strokeWidth={2} />
+          <Icon className="h-6 w-6" strokeWidth={2} />
         ) : null}
       </div>
 
-      {/* Title & description */}
-      <h3 className="text-[15px] font-bold tracking-tight mb-1 group-hover:text-primary transition-colors">
-        {tool.name}
-      </h3>
-      <p className="text-xs text-muted-foreground leading-relaxed">
-        {tool.desc}
-      </p>
+      <h3 className="mb-1 pr-16 text-[15px] font-bold tracking-tight transition-colors group-hover:text-primary">{tool.name}</h3>
+      <p className="text-xs leading-relaxed text-muted-foreground">{tool.desc}</p>
+      {!ready && <p className="mt-auto pt-3 text-[11px] font-medium text-amber-700 dark:text-amber-300">This tool is not enabled yet.</p>}
     </Link>
   );
 }

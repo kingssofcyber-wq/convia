@@ -1,37 +1,37 @@
-import { Target, Zap, Heart } from "lucide-react";
+import { Heart, ShieldCheck, Sparkles, Target } from "lucide-react";
+
+export const metadata = { title: "About Convia" };
 
 export default function AboutPage() {
   return (
-    <div className="container max-w-5xl py-16">
-      <div className="text-center mb-16">
-        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-6">
-          We Simplify Your <span className="gradient-text">Digital Life</span>
-        </h1>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Convia was born out of a simple idea: everyday digital tasks should be fast, free, and incredibly private.
-        </p>
+    <main className="container mx-auto max-w-5xl px-4 py-14 sm:py-20">
+      <header className="mx-auto mb-14 max-w-3xl text-center">
+        <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-primary">About the workspace</p>
+        <h1 className="mb-5 text-4xl font-extrabold tracking-tight sm:text-5xl">Useful tools, <span className="gradient-text">one simpler place.</span></h1>
+        <p className="text-lg leading-8 text-muted-foreground">Convia is a growing digital workspace built to make everyday document and information tasks easier to approach. We are developing practical PDF utilities first, with finance, insurance and wellness resources planned alongside them.</p>
+      </header>
+      <div className="grid gap-5 md:grid-cols-2">
+        <section className="rounded-3xl border border-border bg-card p-7 shadow-sm">
+          <Target className="mb-4 h-9 w-9 text-primary" />
+          <h2 className="mb-3 text-xl font-bold">Our purpose</h2>
+          <p className="leading-7 text-muted-foreground">We want useful digital tasks to feel clear and approachable. The aim is a straightforward workspace with practical tools, transparent limits and helpful instructions.</p>
+        </section>
+        <section className="rounded-3xl border border-border bg-card p-7 shadow-sm">
+          <Sparkles className="mb-4 h-9 w-9 text-primary" />
+          <h2 className="mb-3 text-xl font-bold">A platform in progress</h2>
+          <p className="leading-7 text-muted-foreground">Some PDF tools are available today. Other PDF, financial, insurance and health features are marked Coming Soon until their pages and functions are ready.</p>
+        </section>
+        <section className="rounded-3xl border border-border bg-card p-7 shadow-sm">
+          <ShieldCheck className="mb-4 h-9 w-9 text-primary" />
+          <h2 className="mb-3 text-xl font-bold">Clear privacy information</h2>
+          <p className="leading-7 text-muted-foreground">We aim to explain how each tool handles files. Read the notice on an individual tool before using it for sensitive documents; different features may use different processing methods.</p>
+        </section>
+        <section className="rounded-3xl border border-border bg-card p-7 shadow-sm">
+          <Heart className="mb-4 h-9 w-9 text-primary" />
+          <h2 className="mb-3 text-xl font-bold">Built for everyday use</h2>
+          <p className="leading-7 text-muted-foreground">Convia focuses on a simple interface, clear steps and accessible tools. The project footer credits Mivaan Jangra as its creator.</p>
+        </section>
       </div>
-
-      <div className="grid md:grid-cols-2 gap-8 mb-16">
-        <div className="bg-card border border-border p-8 rounded-3xl shadow-sm">
-          <Target className="w-10 h-10 text-primary mb-4" />
-          <h2 className="text-2xl font-bold mb-3">Our Mission</h2>
-          <p className="text-muted-foreground leading-relaxed">To provide a one-stop platform where anyone can easily manage their PDFs, calculate financial loans, and check their health—without worrying about hidden fees, watermarks, or privacy breaches.</p>
-        </div>
-        <div className="bg-card border border-border p-8 rounded-3xl shadow-sm">
-          <Zap className="w-10 h-10 text-primary mb-4" />
-          <h2 className="text-2xl font-bold mb-3">Why "Convia"?</h2>
-          <p className="text-muted-foreground leading-relaxed">The name comes from "Convenience" + "Via" (the path). We want to be the easiest path to getting your daily tasks done. Built with cutting-edge web technology, our tools run directly in your browser.</p>
-        </div>
-      </div>
-
-      <div className="text-center bg-muted/30 border border-border p-12 rounded-3xl">
-        <Heart className="w-12 h-12 text-red-500 mx-auto mb-4" />
-        <h2 className="text-2xl font-bold mb-4">Made with Privacy in Mind</h2>
-        <p className="text-muted-foreground max-w-2xl mx-auto">
-          We don't store your files. We don't sell your data. Every PDF you merge, split, or compress stays on your device. We believe the internet should be a safer place, and it starts with tools that respect you.
-        </p>
-      </div>
-    </div>
+    </main>
   );
 }
