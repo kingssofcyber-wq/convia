@@ -1,38 +1,53 @@
 import Link from "next/link";
 import { categoryColors, type Tool } from "@/lib/tools-data";
-import { isToolReady } from "@/lib/tool-status";
 
-interface ToolCardProps {
-  tool: Tool;
-}
-
-export function ToolCard({ tool }: ToolCardProps) {
+export function ToolCard({ tool }: { tool: Tool }) {
   const Icon = tool.icon;
   const color = categoryColors[tool.category];
-  const ready = isToolReady(tool.id);
+
+  // जो टूल्स अभी नहीं बने हैं, उनके लिए Coming Soon
+  const isComingSoon = ["pdf2word", "word2pdf", "pdf2jpg", "jpg2pdf", "excel2pdf", "ppt2pdf"].includes(tool.id) && !["jpg2pdf"].includes(tool.id); 
+  // (ध्यान दें: JPG to PDF आपने पहले बना लिया था, तो उसे Available रखा है)
 
   return (
     <Link
-      href={tool.href}
-      aria-label={`${tool.name}${ready ? " — available" : " — coming soon"}`}
-      className="group relative flex min-h-[160px] flex-col rounded-2xl border border-border bg-card p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-lg"
-      style={{ "--hover-color": color } as React.CSSProperties}
+      href={isComingSoon ? "#" : tool.href}
+      className={`group relative flex flex-col p-5 rounded-[1.25rem] bg-background border border-border/60 transition-all duration-300 ${
+        isComingSoon 
+          ? "opacity-80 cursor-not-allowed grayscale-[20%]" 
+          : "hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1"
+      }`}
     >
-      <span className={`absolute right-3 top-3 rounded-md px-2 py-1 text-[9px] font-bold uppercase tracking-wide ${ready ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300" : "bg-amber-500/10 text-amber-700 dark:text-amber-300"}`}>
-        {ready ? "Available" : "Coming Soon"}
-      </span>
+      {/* Top Row */}
+      <div className="flex items-start justify-between mb-5">
+        
+        {/* Icon Container (हल्का बैकग्राउंड) */}
+        <div
+          className="w-11 h-11 rounded-xl grid place-items-center transition-all duration-300 group-hover:scale-110 group-hover:-rotate-3 shadow-sm"
+          style={{ backgroundColor: color + "12", color: color }}
+        >
+          {Icon && <Icon className="w-5 h-5 group-hover:animate-bounce" strokeWidth={2.2} />}
+        </div>
 
-      <div className="mb-3 grid h-12 w-12 shrink-0 place-items-center rounded-xl transition-colors" style={{ backgroundColor: `${color}18`, color }}>
-        {tool.formatLabel ? (
-          <span className="text-center text-[10px] font-extrabold leading-none">{tool.formatLabel}</span>
-        ) : Icon ? (
-          <Icon className="h-6 w-6" strokeWidth={2} />
-        ) : null}
+        {/* Small Badge */}
+        <span
+          className={`px-2.5 py-1 rounded-md text-[9px] font-bold tracking-wider uppercase ${
+            isComingSoon
+              ? "bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-400" 
+              : "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+          }`}
+        >
+          {isComingSoon ? "Coming soon" : "Available"}
+        </span>
       </div>
 
-      <h3 className="mb-1 pr-16 text-[15px] font-bold tracking-tight transition-colors group-hover:text-primary">{tool.name}</h3>
-      <p className="text-xs leading-relaxed text-muted-foreground">{tool.desc}</p>
-      {!ready && <p className="mt-auto pt-3 text-[11px] font-medium text-amber-700 dark:text-amber-300">This tool is not enabled yet.</p>}
+      {/* Title & Description */}
+      <h3 className="text-[15px] font-bold tracking-tight mb-1.5 text-foreground group-hover:text-primary transition-colors">
+        {tool.name}
+      </h3>
+      <p className="text-[13px] text-muted-foreground leading-relaxed line-clamp-2">
+        {tool.desc}
+      </p>
     </Link>
   );
 }

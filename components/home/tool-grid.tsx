@@ -1,68 +1,79 @@
 "use client";
 
 import * as React from "react";
+import { Search, ArrowRight } from "lucide-react";
 import { categoryLabels, tools, type ToolCategory } from "@/lib/tools-data";
 import { ToolCard } from "@/components/home/tool-card";
-import { HeroSearch } from "@/components/home/hero-search";
 
-type TabKey = ToolCategory | "all" | "popular";
-
-const tabOrder: TabKey[] = [
-  "all",
-  "popular",
-  "organize",
-  "convert",
-  "optimize",
-  "edit",
-  "security",
-  "ai",
-];
+type TabKey = ToolCategory | "all";
+const tabOrder: TabKey[] = ["all", "convert", "organize", "edit", "security", "ai"];
 
 export function ToolGrid() {
   const [activeTab, setActiveTab] = React.useState<TabKey>("all");
   const [query, setQuery] = React.useState("");
+  const [showAll, setShowAll] = React.useState(false);
 
+  // फ़िल्टर लॉजिक (सर्च और कैटेगरी)
   const filtered = React.useMemo(() => {
     let list = tools;
-
-    if (activeTab === "popular") {
-      list = list.filter((t) => t.popular);
-    } else if (activeTab !== "all") {
+    
+    // कैटेगरी फ़िल्टर
+    if (activeTab !== "all") {
       list = list.filter((t) => t.category === activeTab);
     }
-
+    
+    // सर्च फ़िल्टर
     if (query.trim()) {
       const q = query.toLowerCase().trim();
-      list = list.filter(
-        (t) =>
-          t.name.toLowerCase().includes(q) ||
-          t.desc.toLowerCase().includes(q) ||
-          t.id.includes(q) ||
-          (t.formatLabel?.toLowerCase().includes(q) ?? false)
+      list = list.filter((t) => 
+        t.name.toLowerCase().includes(q) || 
+        t.desc.toLowerCase().includes(q)
       );
     }
-
+    
     return list;
   }, [activeTab, query]);
 
+  // अगर "All" टैब पर हैं, सर्च खाली है, और showAll फ़ॉल्स है, तो सिर्फ 8 दिखाएँ
+  const displayedTools = (activeTab === "all" && !query.trim() && !showAll) 
+    ? filtered.slice(0, 8) 
+    : filtered;
+
   return (
-    <section id="pdf-tools" className="w-full">
-      {/* Search */}
-      <div className="mb-8">
-        <HeroSearch value={query} onChange={setQuery} />
+    <section className="container max-w-6xl mx-auto px-4 pb-20 relative z-10">
+      
+      {/* Search Bar */}
+      <div className="max-w-2xl mx-auto mb-10 relative group">
+        <div className="absolute -inset-1 bg-gradient-to-r from-primary to-violet-500 rounded-2xl blur opacity-20 group-hover:opacity-30 transition duration-500"></div>
+        <div className="relative flex items-center bg-background border border-border/60 rounded-2xl shadow-lg p-2">
+          <Search className="w-5 h-5 text-muted-foreground ml-4" />
+          <input 
+            type="text" 
+            placeholder="Search for PDF tools..." 
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setShowAll(false); // सर्च करते ही showAll रीसेट हो जाए
+            }}
+            className="w-full bg-transparent px-4 py-2 text-base outline-none placeholder:text-muted-foreground/60"
+          />
+        </div>
       </div>
 
-      {/* Sub-tabs */}
-      <div className="overflow-x-auto scrollbar-hide mb-6">
-        <div className="flex gap-2 min-w-max justify-center px-1">
+      {/* Tabs */}
+      <div className="flex justify-center mb-10">
+        <div className="inline-flex flex-wrap justify-center items-center gap-1.5 p-1.5 bg-background border border-border/60 shadow-sm rounded-full">
           {tabOrder.map((tab) => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-all ${
+              onClick={() => {
+                setActiveTab(tab);
+                setShowAll(false); // टैब बदलने पर showAll रीसेट हो जाए
+              }}
+              className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
                 activeTab === tab
-                  ? "gradient-primary text-white shadow-md"
-                  : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                  ? "bg-primary text-primary-foreground shadow-md"
+                  : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
               }`}
             >
               {categoryLabels[tab]}
@@ -71,33 +82,32 @@ export function ToolGrid() {
         </div>
       </div>
 
-      {/* Results count */}
-      <div className="mb-4 text-center text-sm text-muted-foreground">
-        <span className="font-bold text-foreground">{filtered.length}</span>{" "}
-        {filtered.length === 1 ? "tool" : "tools"} found
-        {query && (
-          <>
-            {" "}
-            for <span className="font-semibold text-foreground">"{query}"</span>
-          </>
-        )}
-      </div>
-
       {/* Grid */}
-      {filtered.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-          {filtered.map((tool) => (
+      {displayedTools.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          {displayedTools.map((tool) => (
             <ToolCard key={tool.id} tool={tool} />
           ))}
         </div>
       ) : (
-        <div className="text-center py-16">
-          <h3 className="text-lg font-bold mb-2">No tools found</h3>
-          <p className="text-muted-foreground text-sm">
-            Try a different keyword or category.
-          </p>
+        <div className="text-center py-20">
+          <p className="text-muted-foreground text-lg">No tools found for "{query}".</p>
         </div>
       )}
+
+      {/* See All Button */}
+      {activeTab === "all" && !query.trim() && !showAll && filtered.length > 8 && (
+        <div className="mt-12 flex justify-center">
+          <button 
+            onClick={() => setShowAll(true)}
+            className="group flex items-center gap-2 bg-background border border-border/80 px-8 py-3 rounded-full text-sm font-bold text-foreground hover:border-primary hover:text-primary transition-all shadow-sm"
+          >
+            See all {filtered.length} tools
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </button>
+        </div>
+      )}
+
     </section>
   );
 }
