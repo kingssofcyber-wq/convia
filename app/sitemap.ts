@@ -1,29 +1,7 @@
 import type { MetadataRoute } from "next";
-
-const SITE_URL = "https://convia.saanwariyasethfashion.com";
-
-// Only include public pages that currently have useful, available content.
-// Coming Soon pages, login and signup are intentionally excluded.
-const publicPaths = [
-  "/",
-  "/about",
-  "/contact",
-  "/privacy",
-  "/terms",
-  "/pdf/merge",
-  "/pdf/split",
-  "/pdf/organize",
-  "/pdf/extract",
-  "/pdf/compress",
-  "/pdf/watermark",
-];
-
+import { PDF_TOOLS } from "@/lib/tools";
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
-  return publicPaths.map((path) => ({
-    url: `${SITE_URL}${path}`,
-    lastModified: now,
-    changeFrequency: path === "/" ? "weekly" : "monthly",
-    priority: path === "/" ? 1 : path.startsWith("/pdf/") ? 0.8 : 0.5,
-  }));
+  const base = (process.env.NEXT_PUBLIC_SITE_URL || "https://convia.saanwariyasethfashion.com").replace(/\/$/, "");
+  const routes = ["/", "/about", "/contact", "/privacy", "/terms", ...PDF_TOOLS.filter((tool) => tool.status === "available").map((tool) => `/pdf/${tool.slug}`)];
+  return routes.map((route) => ({ url: `${base}${route}`, lastModified: new Date(), changeFrequency: route === "/" ? "weekly" : "monthly", priority: route === "/" ? 1 : route.startsWith("/pdf/") ? 0.75 : 0.5 }));
 }

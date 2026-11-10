@@ -1,118 +1,79 @@
-# CONVIA — COMPLETE PROJECT HANDOUT FOR THE NEXT CHAT
-
-Paste or upload this file at the start of a new chat, along with the latest source ZIP or repository files. This handout records the known project facts and unfinished work. Do not assume every listed tool is implemented.
+# CONVIA — COMPLETE NEXT-CHAT PROJECT HANDOUT
 
 ## Project identity
-- Product: **Convia**
-- Public app URL: `https://convia.saanwariyasethfashion.com`
-- GitHub: `https://github.com/kingssofcyber-wq/convia`
-- Repository branch: `main`
-- Owner/creator credit shown in footer: **Mivaan Jangra**
-- Tagline: **Every need, one place.**
-- Purpose: PDF tools plus planned Loans & EMI, Insurance and Health utilities.
+- Name: Convia
+- Domain: https://convia.saanwariyasethfashion.com
+- GitHub: https://github.com/kingssofcyber-wq/convia
+- Branch: `main`
+- Hosting: Hostinger Business Plan, Node.js application
+- Stack: Next.js 16.4.3, React 19, TypeScript, npm, Webpack build
+- Owner/creator credit requested in footer: Mivaan Jangra
+- Brand tagline in new logo: “PDF Tools • Smart Solutions • Endless Possibilities”
 
-## Hosting / domain separation
-- Root domain `saanwariyasethfashion.com` hosts the separate Saanwariya Seth Fashion HTML/PHP company/e-commerce website.
-- Subdomain `convia.saanwariyasethfashion.com` hosts Convia as a Next.js Node.js application.
-- Do not reset DNS, overwrite root `public_html`, or change the root site's A/CNAME records while working on Convia.
-- Hostinger Business Plan, Node.js 22 used for Convia deployment.
-- Build command previously used: `npm run build` with `next build --webpack`.
-- Standalone output in `next.config.mjs`; start command previously used: `node .next/standalone/server.js`.
+## Architecture
+- Root domain `saanwariyasethfashion.com` is a separate HTML/PHP website. Do not change it while working on Convia.
+- Convia is the Node.js Next.js subdomain.
+- Root layout owns the one global Header and Footer.
+- Shared `ToolPageHeader` should be used on all PDF tool pages, with one compact uniform gradient header, same title size, same back action and same spacing.
+- Shared processing components: `ProcessingProgress` and `ProcessingOverlay`. Connect them to each actual processor's progress state; do not fake progress if library does not provide it.
+- New logo assets are under `public/brand/` (PNG transparent and SVG vector). `ConviaLogo` component supports default/inverse appearance and optional tagline.
 
-## Stack observed in public source
-- Next.js 16.4.3, React 19.3.0, TypeScript 5, Tailwind CSS 4, App Router.
-- `pdf-lib`, `lucide-react`, `next-themes`, `react-dropzone`, JSZip and other UI dependencies.
-- Compression page source imports `pdfjs-dist` and `@fileslim/compress`; confirm both are included in the current `package.json` and lockfile.
-- PDF.js worker uses a CDN URL for page preview in the current public compress source.
-- The earlier `@fileslim/compress` worker URL patch is version-specific; keep `scripts/fix-fileslim-worker.cjs` synced with installed package version.
+## Current package status
+This redesign patch provides:
+- New premium homepage with 30 PDF tool cards, search and category filters.
+- Shared header and footer, with Convia logo centered in footer and “Created by Mivaan Jangra” underneath.
+- Light/dark theme toggle.
+- Compact, consistent PDF tool page hero.
+- Reusable upload dropzone, progress bar and processing overlay.
+- Coming Soon route fallback for not-yet-built PDF tools.
+- Login and signup placeholders (not real authentication).
+- Loading, error and not-found pages.
+- Sitemap and robots metadata routes.
 
-## Existing layout / design
-- Premium indigo / violet / blue styling, Inter font, responsive navbar, theme toggle.
-- Navbar labels: PDF Tools, Loans & EMI, Insurance, Health.
-- Footer center signature: Convia logo/name and “Created by Mivaan Jangra”.
-- Homepage components: `components/home/hero.tsx`, `components/home/tool-grid.tsx`, `components/home/tool-card.tsx`, `lib/tools-data.ts`.
-- Root layout includes Navbar, Footer, ThemeProvider and one global AdSense script.
+## Existing PDF processors to preserve
+The user has previously worked on:
+- `/pdf/compress` — custom `@fileslim/compress` engine, `pdfjs-dist`, JPEG/PNG/WebP/AVIF/JXL codec dependencies, worker-copy/patch script, and percentage compression UI. It has previously produced issues around Worker asset path, `pdf.destroy is not a function`, missing `FilePdf` icon, missing `@jsquash/jxl`, and mismatch between displayed estimate and downloaded Blob. Do not overwrite this page or its worker repair scripts without inspecting the latest local source.
+- `/pdf/organize` — upload PDF, page thumbnails, select, rotate, reorder, delete, export.
+- `/pdf/extract` — page range input such as `1, 3-5, 8`, export selected pages as one new PDF.
+- `/pdf/merge`, `/pdf/split`, `/pdf/watermark` — existing routes were previously reachable.
 
-## PDF tools currently treated as available
-These pages existed / returned page content during the most recent source and earlier route audit. This does not certify all functional test cases:
-1. `/pdf/merge`
-2. `/pdf/split`
-3. `/pdf/organize`
-4. `/pdf/extract`
-5. `/pdf/compress`
-6. `/pdf/watermark`
+The redesign ZIP intentionally does not include these six source pages because the newest local working versions were not provided in this turn. Add the new `ToolPageHeader` and `ProcessingProgress` to their existing page bodies without deleting processor state or file logic.
 
-## Remaining PDF tools marked Coming Soon
-The repair patch adds a dynamic `/pdf/[slug]` route so these links no longer land on 404 pages:
-- `/pdf/page-numbers`
-- `/pdf/ocr`
-- `/pdf/repair`
-- `/pdf/jpg-to-pdf`
-- `/pdf/word-to-pdf`
-- `/pdf/excel-to-pdf`
-- `/pdf/ppt-to-pdf`
-- `/pdf/html-to-pdf`
-- `/pdf/pdf-to-word`
-- `/pdf/pdf-to-excel`
-- `/pdf/pdf-to-jpg`
-- `/pdf/pdf-to-ppt`
-- `/pdf/pdf-to-pdfa`
-- `/pdf/edit`
-- `/pdf/annotate`
-- `/pdf/rotate`
-- `/pdf/fill-sign`
-- `/pdf/protect`
-- `/pdf/unlock`
-- `/pdf/sign`
-- `/pdf/chat`
-- `/pdf/summarize`
-- `/pdf/translate`
+## Tool catalogue
+`lib/tools.ts` lists 30 PDF routes. Six are marked Available: compress, merge, split, organize, extract and watermark. Other PDF tools use the `[slug]` dynamic fallback and appear as Coming Soon rather than showing 404. Only mark a tool Available after it has a real working processor.
 
-`/login` and `/signup` are Coming Soon until real authentication is implemented. Do not add dummy forms that pretend to authenticate users.
-
-## Repair patch included in this handout
-- Dynamic Coming Soon pages for missing PDF routes, with noindex metadata.
-- Coming Soon badges on ToolCards for unimplemented tools.
-- Login and signup Coming Soon routes.
-- Friendly app-level not-found page.
-- Homepage anchors / sections for Loans & EMI, Insurance and Health; these are clearly marked Coming Soon and are not calculators/quotes yet.
-- SEO `app/robots.ts`, `app/sitemap.ts`, root metadata defaults.
-- `public/ads.txt` with the supplied publisher record for the Convia subdomain.
-- AdSense component corrected to use its `adSlot` prop instead of hard-coding one slot ID.
-- Contact form now opens an email draft instead of showing a demo alert.
-- Privacy page no longer makes a blanket “100% private” claim for every planned feature.
-- Terms page clarifies general educational nature of finance/insurance/health information and asks users to retain backups.
-- Watermark page removes the old artificial five-page cap and fake pricing alert; processing still needs testing on multi-page files.
+Finance, Insurance and Health overview sections are present. In this package, their listed deeper routes are consistent Coming Soon pages; real calculations/content still need to be built. Do not claim them as functional until built and tested.
 
 ## AdSense details
-- Publisher ID supplied by user: `ca-pub-7776844434912624`.
-- Existing homepage manual slot supplied by user: `4116852365`.
-- Global AdSense script must appear once in `app/layout.tsx`.
-- `components/ads/adsense.tsx` must use `data-ad-slot={adSlot}` for each manual unit. Use unique active slot IDs for additional manual placements.
-- Auto Ads formats (in-page, anchor, vignette, side rail) are controlled in AdSense dashboard. The script alone does not guarantee every ad format on every route.
-- Do not programmatically create popups or repeatedly call `adsbygoogle.push({})` on every route change.
-- Parent domain ads.txt: if the AdSense site entry is `saanwariyasethfashion.com`, confirm the authorised ads.txt record also exists at the parent domain's actual root website. The Convia `public/ads.txt` only serves the subdomain URL.
-- AdSense approval/ad fill is never guaranteed by the code alone.
+- Publisher ID: `ca-pub-7776844434912624`
+- Existing slot IDs: `5509141619` (Multiplex), `2354911961` (728x90), `7311509571` (In-article), `2443937103` (Responsive Display); old header slot `4116852365` was previously used too.
+- User also created a Supabase Central AdSense Manager package. If installed, preserve its API routes, `components/ads/ad-zone.tsx`, `lib/ads/*`, Supabase SQL and env variables.
+- Keep exactly one global AdSense script. Do not add repeated `adsbygoogle.push()` calls in RootLayout or arbitrary components.
+- Auto Ads (Anchor/Vignette/Side Rail) are configured in AdSense dashboard and do not become manual unit snippets in the admin manager.
+- If using Supabase AdZone, preserve the zones: `after-header`, `before-footer`, `side-left`, `side-right`, `home-after-hero`, `pdf-after-tool`.
 
-## Known issue / required owner verification
-- The current source uses `support@convia.com`. Confirm it is a real monitored inbox. If not, replace it in `app/contact/page.tsx`, `app/privacy/page.tsx`, `app/terms/page.tsx` and the contact link config before launch.
-- The contact form uses `mailto:`. It opens the visitor's email app and does not send through a server. A real backend form requires a mail service / API route and its credentials.
-- Verify whether all PDF tools process entirely in browser before claiming that files never leave the device.
-- Verify dependencies present in both `package.json` and `package-lock.json`; do not depend on manually installed `node_modules` only.
-- Check Next.js 16 compatibility of `next.config.mjs`, its `eslint` key and the `lint` script before claiming lint passes.
+## Supabase / security
+The user said Hostinger dashboard presents Supabase and MongoDB and chose Supabase for the Central Ad Manager. Do not put Supabase Secret/Service Role key in `NEXT_PUBLIC_` variables. `.env.local` must be ignored by `.gitignore`; never stage or upload secrets. Public publishable/anon key is allowed client-side but requires RLS policies.
 
-## Deployment / validation checklist
-1. Back up the current project or commit a checkpoint.
-2. Apply `docs/APPLY-REPAIR.md` patch files into `D:\convia`.
-3. Verify support email and ads.txt ownership.
-4. `npm ci` (or `npm install` if lockfile needs intentional update).
-5. `npm run build`.
-6. Run `npm run dev` and smoke-test all paths in `docs/ROUTE-STATUS.md`.
-7. Verify `/robots.txt`, `/sitemap.xml`, `/ads.txt`.
-8. Test six available PDF tools with test files and verify downloaded outputs.
-9. Test responsive layout, dark mode, navigation and keyboard accessibility.
-10. `git status`, `git add -A`, commit and push to `main`.
-11. Deploy Convia Node.js app in Hostinger; do not disturb root Saanwariya website.
+## Brand/UI requirements
+- Premium but clean technology SaaS style; indigo/blue/violet gradients, light background, dark theme supported.
+- Same header and footer globally.
+- Footer center logo + “Created by Mivaan Jangra”.
+- Compact same-size tool hero/header on every PDF page. Avoid huge colored background height.
+- Consistent card dimensions, typography and spacing.
+- Subtle animations; respect `prefers-reduced-motion`.
+- Every real processing tool should expose a status and progress indicator based on real library progress (or indeterminate state where progress is unknown).
+- Keep upload, processing and download controls visually distinct; do not place ads too close to file controls.
 
-## Prompt for the next chat
-“Read this complete Convia handout and inspect the attached repair ZIP and current source files. Continue from the exact existing Next.js 16.4.3 App Router project; do not replace the entire site or break the six available PDF tools. First apply and validate the repair patch, compare it with my actual current repository, run a production build, and report any unresolved issues honestly. Keep the 23 missing PDF tools and login/signup as Coming Soon until they are genuinely implemented. Then work on the next PDF tool one at a time, with full working source and a test checklist.”
+## Current install steps
+1. Backup the current `D:\convia` project.
+2. Merge PATCH files to the same relative paths. Do not blindly replace existing working PDF processors or the Supabase Manager files.
+3. Keep existing `app/globals.css`; Root Layout imports a separate `app/convia-design-system.css`.
+4. Ensure `lucide-react` and `next-themes` are dependencies.
+5. Build locally: `npm run build`.
+6. Test `/`, the six working PDF routes, multiple Coming Soon routes, `/login`, `/signup`, `/robots.txt`, `/sitemap.xml`.
+7. Push only after `git status` confirms no `.env.local`, secrets or keys are staged.
+8. Deploy to Hostinger's Convia Node.js app, not the Saanwariya PHP site.
+
+## Important honesty note
+The ZIP is a source patch/template package. It has not been built inside the user's private current repository. Existing PDF processors have not been end-to-end tested here. Do not tell the user all 30 tools work. The Coming Soon routes deliberately avoid false claims. The user should provide the latest repository ZIP when asking for a fully merged production package.

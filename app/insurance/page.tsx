@@ -1,0 +1,5 @@
+import Link from "next/link";
+import { ShieldCheck, ArrowLeft, Clock3 } from "lucide-react";
+import { ToolPageHeader } from "@/components/pdf/tool-page-header";
+export const metadata = { title: "Insurance Guides | Convia" };
+export default function InsurancePage() { return <><ToolPageHeader title="Insurance guides" description="Understand common insurance types, key terms and questions to ask before choosing cover." eyebrow="PROTECTION & COVER" backHref="/#insurance"/><main className="page-container simple-state-wrap"><section className="coming-soon-card"><div className="coming-soon-icon"><ShieldCheck size={28}/></div><span className="section-kicker">INSURANCE KNOWLEDGE</span><h2>Insurance guides are being prepared.</h2><p>Educational guides for life, health, motor and travel insurance will be published here. Convia does not currently sell or recommend a specific policy.</p><div className="coming-soon-actions"><Link className="button-primary" href="/#insurance"><ArrowLeft size={16}/> Back to overview</Link><span><Clock3 size={15}/> Coming soon</span></div></section></main></>; }

@@ -1,0 +1,3 @@
+Next Chat use:
+1. Upload the ZIP or paste CONVIA-NEXT-CHAT-HANDOUT.md into a new conversation.
+2. Say: “Read this handout and inspect the uploaded PATCH. Help me safely merge it with my latest D:\convia project. Do not overwrite the existing Compress PDF, Organize PDF, Extract PDF, Merge PDF, Split PDF or Watermark processing logic. First make a file-by-file merge plan, then run a production build and test each route.”

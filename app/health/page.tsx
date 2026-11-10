@@ -1,0 +1,5 @@
+import Link from "next/link";
+import { HeartPulse, ArrowLeft, Clock3 } from "lucide-react";
+import { ToolPageHeader } from "@/components/pdf/tool-page-header";
+export const metadata = { title: "Health & Wellness | Convia" };
+export default function HealthPage() { return <><ToolPageHeader title="Everyday health" description="Explore general wellness information and simple tools when they become available." eyebrow="HEALTH & WELLNESS" backHref="/#health"/><main className="page-container simple-state-wrap"><section className="coming-soon-card"><div className="coming-soon-icon"><HeartPulse size={28}/></div><span className="section-kicker">WELLNESS TOOLKIT</span><h2>Health tools are being prepared.</h2><p>Convia's health section will provide general educational information only. It will not diagnose conditions or replace advice from a qualified professional.</p><div className="coming-soon-actions"><Link className="button-primary" href="/#health"><ArrowLeft size={16}/> Back to overview</Link><span><Clock3 size={15}/> Coming soon</span></div></section></main></>; }

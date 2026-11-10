@@ -1,12 +1,15 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
-import { ArrowLeft, Loader2, Download, CheckCircle2, FileText, X, Plus, ArrowUpRight, Lock } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { 
+  Loader2, Download, CheckCircle2, FileText, X, Plus, Lock, Combine 
+} from "lucide-react";
 import { FileDropzone } from "@/components/pdf/file-dropzone";
 import { mergePDFs } from "@/lib/pdf/merge";
 import { PDFDocument } from "pdf-lib";
 import { Button } from "@/components/ui/button";
+import { ToolHeader } from "@/components/layout/tool-header";
 
 interface CustomFile {
   file: File;
@@ -40,7 +43,6 @@ export default function MergePdfPage() {
           pageCount: pdf.getPageCount(),
         });
       } catch (err) {
-        console.error("Error reading file:", file.name);
         setError(`Could not read "${file.name}". It might be password protected.`);
       }
     }
@@ -98,35 +100,17 @@ export default function MergePdfPage() {
 
   return (
     <div className="min-h-screen bg-muted/20">
-      {/* Header */}
-      <header className="bg-background border-b border-border sticky top-0 z-40">
-        <div className="container max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-            <ArrowLeft className="w-4 h-4 mr-2" /> Back to Tools
-          </Link>
-          <div className="flex items-center gap-2 text-primary font-bold">
-            <FileText className="w-5 h-5" />
-            <span>Merge PDF</span>
-          </div>
-        </div>
-      </header>
+      {/* नया कॉम्पैक्ट हेडर */}
+      <ToolHeader 
+        title="Merge PDF" 
+        description="Combine multiple PDFs into one seamless file." 
+        icon={Combine} 
+      />
 
-      <main className="container max-w-4xl mx-auto px-4 py-12">
-        {/* Title Area */}
-        <div className="text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <h1 className="text-4xl font-extrabold tracking-tight mb-3">
-            Combine PDFs <span className="gradient-text">Perfectly.</span>
-          </h1>
-          <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-            Drag and drop your files below. We'll arrange them exactly as you want.
-          </p>
-        </div>
-
-        {/* Main Content Card */}
+      <main className="container max-w-4xl mx-auto px-4 pb-24 mt-8">
         <div className="bg-background rounded-3xl border border-border shadow-xl shadow-black/5 overflow-hidden">
           
           {isProcessing ? (
-            /* Processing State */
             <div className="flex flex-col items-center justify-center py-32 px-4 animate-in fade-in zoom-in-95 duration-300">
               <div className="relative mb-8">
                 <div className="w-24 h-24 border-4 border-muted rounded-full"></div>
@@ -151,7 +135,6 @@ export default function MergePdfPage() {
               </div>
             </div>
           ) : result ? (
-            /* Success State */
             <div className="flex flex-col items-center text-center py-20 px-4 animate-in fade-in zoom-in-95 duration-500">
               <div className="w-24 h-24 bg-green-500/10 rounded-full flex items-center justify-center mb-6">
                 <CheckCircle2 className="w-12 h-12 text-green-500" />
@@ -159,7 +142,6 @@ export default function MergePdfPage() {
               <h2 className="text-3xl font-bold mb-2">Successfully Merged!</h2>
               <p className="text-muted-foreground mb-8">Your new PDF is ready for download.</p>
               
-              {/* Result File Card */}
               <div className="flex items-center gap-4 p-5 bg-muted/40 border border-border rounded-2xl w-full max-w-md mb-8 text-left">
                 <div className="w-12 h-12 bg-red-500/10 rounded-xl flex items-center justify-center shrink-0">
                   <FileText className="w-6 h-6 text-red-500" />
@@ -185,14 +167,11 @@ export default function MergePdfPage() {
               </div>
             </div>
           ) : (
-            /* Upload & List State */
             <div className="p-6 md:p-10">
-              
-              {/* Dropzone */}
               {files.length < MAX_FREE_FILES && (
                 <div className="mb-8">
                   <FileDropzone 
-                    files={[]} // हम कस्टम लिस्ट मैनेज कर रहे हैं
+                    files={[]} 
                     onFilesChange={handleFilesChange} 
                     maxFiles={MAX_FREE_FILES - files.length} 
                   />
@@ -206,14 +185,12 @@ export default function MergePdfPage() {
                 </div>
               )}
 
-              {/* Error */}
               {error && (
                 <div className="mb-6 p-4 bg-red-500/10 text-red-600 rounded-xl text-sm border border-red-500/20 flex items-center gap-2">
                   <X className="w-5 h-5 shrink-0" /> {error}
                 </div>
               )}
 
-              {/* File List */}
               {files.length > 0 && (
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
@@ -230,31 +207,20 @@ export default function MergePdfPage() {
                         className="group flex items-center gap-4 p-4 bg-background border border-border rounded-2xl hover:border-primary/40 hover:shadow-md transition-all animate-in slide-in-from-right-8 fade-in duration-300"
                         style={{ animationDelay: `${index * 50}ms` }}
                       >
-                        {/* Number Indicator */}
                         <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-sm font-bold text-muted-foreground shrink-0">
                           {index + 1}
                         </div>
-
-                        {/* File Icon */}
                         <div className="w-12 h-12 bg-red-500/10 rounded-xl flex items-center justify-center shrink-0">
                           <FileText className="w-6 h-6 text-red-500" />
                         </div>
-
-                        {/* File Info */}
                         <div className="flex-1 min-w-0">
                           <p className="font-semibold text-foreground truncate">{file.file.name}</p>
-                          <p className="text-sm text-muted-foreground">
-                            {(file.file.size / 1024 / 1024).toFixed(2)} MB
-                          </p>
+                          <p className="text-sm text-muted-foreground">{(file.file.size / 1024 / 1024).toFixed(2)} MB</p>
                         </div>
-
-                        {/* Page Badge */}
                         <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-muted rounded-lg text-sm font-medium">
                           <FileText className="w-4 h-4 text-muted-foreground" />
                           {file.pageCount} Pages
                         </div>
-
-                        {/* Remove Button */}
                         <button 
                           onClick={() => removeFile(file.id)}
                           className="w-10 h-10 rounded-full flex items-center justify-center text-muted-foreground hover:bg-red-500/10 hover:text-red-500 transition-colors shrink-0"
@@ -265,8 +231,7 @@ export default function MergePdfPage() {
                     ))}
                   </div>
 
-                  {/* Merge Button */}
-                  <div className="pt-6 mt-6 border-t border-border flex flex-col items-center convia-compact-tool-header">
+                  <div className="pt-6 mt-6 border-t border-border flex flex-col items-center">
                     <Button
                       size="lg"
                       className="w-full md:w-auto min-w-[300px] h-14 text-lg gradient-primary text-white shadow-xl shadow-primary/20 hover:scale-105 transition-transform"
@@ -281,6 +246,22 @@ export default function MergePdfPage() {
                       </p>
                     )}
                   </div>
+                </div>
+              )}
+
+              {files.length >= MAX_FREE_FILES && (
+                <div className="mt-6 p-5 bg-primary/10 border border-primary/20 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div>
+                    <p className="text-base font-bold text-primary flex items-center gap-2">
+                      <Lock className="w-5 h-5" /> Free Limit Reached
+                    </p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      You have reached the limit of {MAX_FREE_FILES} files.
+                    </p>
+                  </div>
+                  <Button onClick={() => alert("Redirecting to Pricing Page...")} className="gradient-primary text-white shrink-0 w-full sm:w-auto">
+                    Buy Now to Upgrade
+                  </Button>
                 </div>
               )}
             </div>

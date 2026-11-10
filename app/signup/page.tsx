@@ -1,22 +1,5 @@
-import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, LockKeyhole } from "lucide-react";
-
-export const metadata: Metadata = {
-  title: "Sign up — Coming Soon",
-  robots: { index: false, follow: true },
-};
-
-export default function AccountComingSoonPage() {
-  return (
-    <main className="grid min-h-[70vh] place-items-center bg-background px-4 py-12">
-      <section className="w-full max-w-xl rounded-3xl border border-border bg-card p-7 text-center shadow-sm sm:p-10">
-        <div className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-2xl bg-primary/10 text-primary"><LockKeyhole size={26} /></div>
-        <span className="rounded-full bg-amber-500/10 px-3 py-1 text-xs font-bold uppercase tracking-wide text-amber-700 dark:text-amber-300">Coming soon</span>
-        <h1 className="mt-5 text-3xl font-extrabold">Sign up</h1>
-        <p className="mt-3 leading-7 text-muted-foreground">Convia accounts are not open yet. The available browser-based tools can be used without signing in.</p>
-        <Link href="/" className="mt-7 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"><ArrowLeft size={16} /> Back to Convia</Link>
-      </section>
-    </main>
-  );
-}
+import { ToolPageHeader } from "@/components/pdf/tool-page-header";
+import { UserPlus, ArrowLeft } from "lucide-react";
+export const metadata = { title: "Sign up | Convia" };
+export default function SignupPage() { return <><ToolPageHeader title="Create your Convia account" description="A simpler workspace is on the way." eyebrow="CONVIA ACCOUNT"/><main className="page-container simple-state-wrap"><section className="coming-soon-card"><div className="coming-soon-icon"><UserPlus size={28}/></div><h2>Sign up is coming soon.</h2><p>Account registration is not active yet. You can continue using the PDF tools marked Available without signing in.</p><Link className="button-primary" href="/#pdf-tools"><ArrowLeft size={16}/> Back to Convia</Link></section></main></>; }
