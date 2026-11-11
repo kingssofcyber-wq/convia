@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { 
   ArrowRight, Calculator, Shield, Heart, 
-  TrendingUp, Droplets, Clock, User, Sparkles 
+  TrendingUp, Droplets, Clock, User, Sparkles, 
+  Ad
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Hero } from "@/components/home/hero";
@@ -21,6 +22,7 @@ export default function Home() {
       {/* 3. AdSense Banner */}
       <div className="container max-w-5xl mx-auto px-4 mb-20">
         <AdSense adSlot="4116852365" /> 
+        <AdSense adSlot="2443937103" />
       </div>
 
       {/* 4. Finance & Insurance Section */}
