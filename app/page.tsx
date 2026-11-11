@@ -21,7 +21,7 @@ export default function Home() {
 
       {/* 3. AdSense Banner */}
       <div className="container max-w-5xl mx-auto px-4 mb-20">
-        <AdSense adSlot="4116852365" /> 
+         
         <AdSense adSlot="2443937103" />
       </div>
 
