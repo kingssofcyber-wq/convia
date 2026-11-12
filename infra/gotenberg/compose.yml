@@ -1,0 +1,20 @@
+services:
+  gotenberg:
+    image: gotenberg/gotenberg:9
+    restart: unless-stopped
+    environment:
+      API_ENABLE_BASIC_AUTH: "true"
+      GOTENBERG_API_BASIC_AUTH_USERNAME: ${GOTENBERG_API_BASIC_AUTH_USERNAME:?set username in the host environment}
+      GOTENBERG_API_BASIC_AUTH_PASSWORD: ${GOTENBERG_API_BASIC_AUTH_PASSWORD:?set a long password in the host environment}
+      API_DISABLE_DOWNLOAD_FROM: "true"
+      CHROMIUM_DISABLE_JAVASCRIPT: "true"
+      CHROMIUM_DENY_PRIVATE_IPS: "true"
+      PDF_DENY_PRIVATE_IPS: "true"
+      API_TIMEOUT: "180s"
+      API_BODY_LIMIT: "70MB"
+      PDF_MAX_CONCURRENCY: "1"
+    ports:
+      # Expose only on localhost. Put a TLS reverse proxy in front if another server needs to reach it.
+      - "127.0.0.1:3000:3000"
+    security_opt:
+      - no-new-privileges:true

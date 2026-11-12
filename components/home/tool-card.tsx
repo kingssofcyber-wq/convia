@@ -5,26 +5,26 @@ export function ToolCard({ tool }: { tool: Tool }) {
   const Icon = tool.icon;
   const color = categoryColors[tool.category];
 
-  // जो टूल्स अभी नहीं बने हैं, उनके लिए Coming Soon
-  const isComingSoon = ["pdf2word", "word2pdf", "pdf2jpg", "jpg2pdf", "excel2pdf", "ppt2pdf"].includes(tool.id) && !["jpg2pdf"].includes(tool.id); 
-  // (ध्यान दें: JPG to PDF आपने पहले बना लिया था, तो उसे Available रखा है)
+  // यहाँ उन सभी टूल्स की लिस्ट है जो अभी बनकर तैयार हैं
+  const builtTools = [
+    "merge", "split", "compress", "organize", 
+    "extract", "watermark", "jpg2pdf", "html2pdf", 
+    "word2pdf", "pdf2word"
+  ];
+
+  // अगर टूल इस लिस्ट में नहीं है, तो वह Coming Soon है
+  const isComingSoon = !builtTools.includes(tool.id);
 
   return (
     <Link
-      href={isComingSoon ? "#" : tool.href}
-      className={`group relative flex flex-col p-5 rounded-[1.25rem] bg-background border border-border/60 transition-all duration-300 ${
-        isComingSoon 
-          ? "opacity-80 cursor-not-allowed grayscale-[20%]" 
-          : "hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1"
-      }`}
+      href={tool.href} // अब सभी कार्ड क्लिक होंगे
+      className="group relative flex flex-col p-5 rounded-[1.25rem] bg-background border border-border/60 transition-all duration-300 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1"
     >
       {/* Top Row */}
       <div className="flex items-start justify-between mb-5">
-        
-        {/* Icon Container (हल्का बैकग्राउंड) */}
         <div
           className="w-11 h-11 rounded-xl grid place-items-center transition-all duration-300 group-hover:scale-110 group-hover:-rotate-3 shadow-sm"
-          style={{ backgroundColor: color + "12", color: color }}
+          style={{ backgroundColor: color + "15", color: color }}
         >
           {Icon && <Icon className="w-5 h-5 group-hover:animate-bounce" strokeWidth={2.2} />}
         </div>

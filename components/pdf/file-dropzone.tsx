@@ -2,16 +2,26 @@
 
 import * as React from "react";
 import { useDropzone } from "react-dropzone";
-import { UploadCloud, File, X, Lock } from "lucide-react";
+import { UploadCloud, File, X, Image as ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface FileDropzoneProps {
   files: File[];
   onFilesChange: (files: File[]) => void;
   maxFiles?: number;
+  acceptType?: "pdf" | "image";
+  title?: string;
+  subtitle?: string;
 }
 
-export function FileDropzone({ files, onFilesChange, maxFiles = 7 }: FileDropzoneProps) {
+export function FileDropzone({ 
+  files, 
+  onFilesChange, 
+  maxFiles = 7, 
+  acceptType = "pdf",
+  title,
+  subtitle
+}: FileDropzoneProps) {
   const onDrop = React.useCallback(
     (acceptedFiles: File[]) => {
       onFilesChange([...files, ...acceptedFiles]);
@@ -19,9 +29,14 @@ export function FileDropzone({ files, onFilesChange, maxFiles = 7 }: FileDropzon
     [files, onFilesChange]
   );
 
+  // यहाँ हम टाइप के हिसाब से फाइल एक्सेप्ट कर रहे हैं
+  const acceptConfig = acceptType === "pdf" 
+    ? { "application/pdf": [".pdf"] } 
+    : { "image/jpeg": [".jpg", ".jpeg"], "image/png": [".png"] };
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: { "application/pdf": [".pdf"] },
+    accept: acceptConfig,
     maxFiles: maxFiles - files.length,
     disabled: files.length >= maxFiles,
   });
@@ -32,29 +47,20 @@ export function FileDropzone({ files, onFilesChange, maxFiles = 7 }: FileDropzon
     onFilesChange(newFiles);
   };
 
-  const handleUpgrade = () => {
-    // यहाँ आगे चलकर हम पेमेंट गेटवे या प्राइसिंग पेज से जोड़ेंगे
-    alert("Free limit of 7 files reached! Please upgrade to Pro to add more files.");
-  };
-
   return (
     <div className="w-full space-y-4">
       {files.length >= maxFiles ? (
-        // Limit Reached View
         <div className="flex flex-col items-center justify-center w-full h-64 border-2 border-primary/50 bg-primary/5 rounded-2xl p-6 text-center">
           <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4">
-            <Lock className="w-8 h-8 text-primary" />
+            <span className="text-2xl">🛑</span>
           </div>
-          <h3 className="text-lg font-bold text-foreground mb-1">Free Limit Reached</h3>
-          <p className="text-sm text-muted-foreground mb-4">
-            You can only merge up to {maxFiles} files for free.
-          </p>
-          <Button onClick={handleUpgrade} className="gradient-primary text-white">
+          <h3 className="text-lg font-bold mb-1">Limit Reached</h3>
+          <p className="text-sm text-muted-foreground mb-4">You can only use up to {maxFiles} files.</p>
+          <Button onClick={() => alert("Redirecting to Pricing Page...")} className="gradient-primary text-white">
             Buy Now to Upgrade
           </Button>
         </div>
       ) : (
-        // Dropzone View
         <div
           {...getRootProps()}
           className={`relative flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-2xl cursor-pointer transition-all duration-200 ${
@@ -66,10 +72,10 @@ export function FileDropzone({ files, onFilesChange, maxFiles = 7 }: FileDropzon
             <UploadCloud className="w-8 h-8 text-primary" />
           </div>
           <p className="text-lg font-semibold mb-1 text-center px-4">
-            {isDragActive ? "Drop files here..." : "Drag & drop PDF files here, or click to browse"}
+            {isDragActive ? "Drop files here..." : (title || `Drag & drop ${acceptType === 'pdf' ? 'PDF' : 'Image'} files here`)}
           </p>
           <p className="text-sm text-muted-foreground text-center px-4">
-            Only PDF files are supported. (Max {maxFiles} files for free)
+            {subtitle || `Max ${maxFiles} files for free.`}
           </p>
         </div>
       )}
@@ -81,8 +87,8 @@ export function FileDropzone({ files, onFilesChange, maxFiles = 7 }: FileDropzon
             {files.map((file, index) => (
               <li key={`${file.name}-${index}`} className="flex items-center justify-between p-3 bg-card border border-border rounded-xl shadow-sm">
                 <div className="flex items-center gap-3 overflow-hidden">
-                  <div className="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center shrink-0">
-                    <File className="w-5 h-5 text-red-500" />
+                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${acceptType === 'pdf' ? 'bg-red-500/10 text-red-500' : 'bg-blue-500/10 text-blue-500'}`}>
+                    {acceptType === 'pdf' ? <File className="w-5 h-5" /> : <ImageIcon className="w-5 h-5" />}
                   </div>
                   <div className="min-w-0">
                     <p className="text-sm font-medium truncate">{file.name}</p>

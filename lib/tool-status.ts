@@ -1,6 +1,6 @@
 /**
- * Keep this list aligned with the PDF routes that have been implemented and
- * smoke-tested. A tool absent from this set is shown as Coming Soon.
+ * Keep this list aligned with PDF routes that have an implemented tool page.
+ * JPG to PDF is enabled by this patch and is processed locally in the browser.
  */
 export const READY_TOOL_IDS = new Set([
   "merge",
@@ -9,6 +9,7 @@ export const READY_TOOL_IDS = new Set([
   "extract",
   "compress",
   "watermark",
+  "jpg2pdf",
 ]);
 
 export function isToolReady(toolId: string): boolean {
