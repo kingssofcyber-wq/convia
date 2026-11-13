@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
+  serverExternalPackages: ["pptxgenjs"],
   output: "standalone",
 
   typescript: {
