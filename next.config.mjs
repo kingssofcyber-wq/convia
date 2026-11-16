@@ -1,11 +1,23 @@
-/** @type {import('next').NextConfig} */
 
+/** @type {import('next').NextConfig} */
 const nextConfig = {
-  serverExternalPackages: ["pptxgenjs"],
   output: "standalone",
 
+  experimental: {
+    cpus: 2,
+    staticGenerationMaxConcurrency: 2,
+  },
+
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
+  },
+
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
+
+  images: {
+    unoptimized: true,
   },
 };
 
