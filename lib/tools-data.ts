@@ -15,6 +15,7 @@ export interface Tool {
   name: string;
   desc: string;
   href: string;
+  formatLabel?: string;
   category: ToolCategory;
   icon?: LucideIcon;
   popular?: boolean;
