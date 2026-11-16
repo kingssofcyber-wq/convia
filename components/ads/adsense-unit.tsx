@@ -77,7 +77,7 @@ interface AdSenseUnitProps {
 export function AdSenseUnit({ unit, className = "" }: AdSenseUnitProps) {
   const config = AD_UNITS[unit];
   const wrapperRef = useRef<HTMLDivElement | null>(null);
-  const insRef = useRef<HTMLElement | null>(null);
+  const insRef = useRef<HTMLModElement | null>(null);
   const pushedRef = useRef(false);
 
   useEffect(() => {
@@ -119,12 +119,11 @@ export function AdSenseUnit({ unit, className = "" }: AdSenseUnitProps) {
     frameId = window.requestAnimationFrame(tryPushAd);
 
     let resizeObserver: ResizeObserver | undefined;
-    if ("ResizeObserver" in window) {
+    if (typeof ResizeObserver !== "undefined") {
       resizeObserver = new ResizeObserver(tryPushAd);
       resizeObserver.observe(wrapper);
-    } else {
-      window.addEventListener("resize", tryPushAd);
     }
+    window.addEventListener("resize", tryPushAd);
 
     return () => {
       disposed = true;

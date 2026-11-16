@@ -95,7 +95,7 @@ async function ocrCanvas(page: any, language: string, onProgress?: (progress: nu
   try {
     onProgress?.(Math.round((pageIndex / pageTotal) * 80), `Reading scanned page ${pageIndex + 1} of ${pageTotal}`);
     const result = await worker.recognize(canvas);
-    const words = (result.data.words ?? []) as Array<{ text: string; confidence?: number; bbox: { x0: number; y0: number; x1: number; y1: number }; block?: number; paragraph?: number; line?: number }>;
+    const words = (((result.data as unknown as { words?: Array<{ text: string; confidence?: number; bbox: { x0: number; y0: number; x1: number; y1: number }; block?: number; paragraph?: number; line?: number }> }).words) ?? []);
     const chunks = words.filter((word) => word.text?.trim()).map((word) => ({
       x: word.bbox.x0 / 2.1, y: -((word.bbox.y0 + word.bbox.y1) / 4.2),
       width: (word.bbox.x1 - word.bbox.x0) / 2.1, height: (word.bbox.y1 - word.bbox.y0) / 2.1,

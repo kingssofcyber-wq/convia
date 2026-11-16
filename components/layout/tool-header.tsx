@@ -1,37 +1,57 @@
+"use client";
+
 import Link from "next/link";
-import { ArrowLeft, LucideIcon } from "lucide-react";
+import { useId } from "react";
+import type { LucideIcon } from "lucide-react";
+import { ArrowLeft, Sparkles, FileText } from "lucide-react";
+import { getPdfToolTagline } from "@/lib/pdf-tool-metadata";
 
-interface ToolHeaderProps {
+type ToolHeaderProps = {
   title: string;
-  description: string;
-  icon: LucideIcon;
-}
+  description?: string;
+  tagline?: string;
+  eyebrow?: string;
+  icon?: LucideIcon;
+  backHref?: string;
+  backLabel?: string;
+  className?: string;
+};
 
-export function ToolHeader({ title, description, icon: Icon }: ToolHeaderProps) {
+/** Shared premium header. Under /pdf, the PDF route layout provides the single global instance. */
+export function ToolHeader({
+  title,
+  description = "",
+  tagline,
+  eyebrow = "CONVIA PDF WORKSPACE",
+  icon: ToolIcon = FileText,
+  backHref = "/#pdf-tools",
+  backLabel = "Back to tools",
+  className = "",
+}: ToolHeaderProps) {
+  const line = tagline?.trim() || getPdfToolTagline(title) || description.trim() || "A focused workspace to get more done with your PDF.";
+  const titleId = useId();
+
   return (
-    <header className="relative bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 text-white overflow-hidden py-8 px-4 shadow-lg">
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
-      
-      <div className="container max-w-5xl mx-auto relative z-10 flex flex-col md:flex-row items-center justify-between gap-4">
-        {/* Left Side: Icon + Text */}
-        <div className="flex items-center gap-4 text-center md:text-left">
-          <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-md border border-white/20 shrink-0 hidden md:flex">
-            <Icon className="w-7 h-7 text-white" />
+    <section className={`cv-tool-header ${className}`.trim()} aria-labelledby={titleId}>
+      <div className="cv-tool-header-glow cv-tool-header-glow-a" aria-hidden="true" />
+      <div className="cv-tool-header-glow cv-tool-header-glow-b" aria-hidden="true" />
+      <div className="cv-tool-header-grid" aria-hidden="true" />
+      <div className="cv-tool-header-inner">
+        <div className="cv-tool-header-copy">
+          <div className="cv-tool-header-eyebrow"><Sparkles size={13} aria-hidden="true"/><span>{eyebrow}</span></div>
+          <div className="cv-tool-header-title-row">
+            <ToolIcon className="cv-tool-header-title-icon" size={22} aria-hidden="true" />
+            <h1 id={titleId}>{title}</h1>
           </div>
-          <div>
-            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight drop-shadow-sm">{title}</h1>
-            <p className="text-white/80 text-sm mt-1">{description}</p>
-          </div>
+          <p className="cv-tool-header-tagline">{line}</p>
         </div>
-
-        {/* Right Side: Back Button */}
-        <Link 
-          href="/" 
-          className="inline-flex items-center text-sm font-bold text-white bg-black/20 hover:bg-black/40 px-5 py-2.5 rounded-full backdrop-blur-sm transition-all border border-white/10"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" /> Back to Tools
+        <Link href={backHref} className="cv-tool-header-back" aria-label={backLabel} title={backLabel}>
+          <ArrowLeft size={18} aria-hidden="true" />
+          <span>{backLabel}</span>
         </Link>
       </div>
-    </header>
+    </section>
   );
 }
+
+export default ToolHeader;

@@ -86,7 +86,7 @@ export function PdfToPptWorkspace() {
     setProgress(3);
     setPhase("Opening PDF");
 
-    let loadingTask: { destroy: () => Promise<void> } | null = null;
+    let loadingTask: { promise: Promise<any>; destroy: () => Promise<void> } | null = null;
     let pdfDocument: { numPages: number; getPage: (n: number) => Promise<any>; destroy?: () => Promise<void> } | null = null;
 
     try {
@@ -106,17 +106,17 @@ export function PdfToPptWorkspace() {
       loadingTask = pdfjs.getDocument({ data: new Uint8Array(await file.arrayBuffer()) });
       pdfDocument = await loadingTask.promise;
 
-      if (pdfDocument.numPages > MAX_PAGES) {
+      if (pdfDocument!.numPages > MAX_PAGES) {
         throw new Error(`This tool supports up to ${MAX_PAGES} pages per conversion. Split the PDF and try again.`);
       }
 
       const slides: SlidePayload[] = [];
       let shapeCount = 0;
 
-      for (let pageNo = 1; pageNo <= pdfDocument.numPages; pageNo += 1) {
-        setPhase(`Preparing slide ${pageNo} of ${pdfDocument.numPages}`);
-        setProgress(Math.min(88, 8 + Math.round((pageNo - 1) / pdfDocument.numPages * 78)));
-        const page = await pdfDocument.getPage(pageNo);
+      for (let pageNo = 1; pageNo <= pdfDocument!.numPages; pageNo += 1) {
+        setPhase(`Preparing slide ${pageNo} of ${pdfDocument!.numPages}`);
+        setProgress(Math.min(88, 8 + Math.round((pageNo - 1) / pdfDocument!.numPages * 78)));
+        const page = await pdfDocument!.getPage(pageNo);
         const viewport = page.getViewport({ scale: 1 });
         const scale = Math.min(SLIDE_W / viewport.width, SLIDE_H / viewport.height);
         const offsetX = (SLIDE_W - viewport.width * scale) / 2;

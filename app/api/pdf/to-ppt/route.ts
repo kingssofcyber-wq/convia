@@ -82,11 +82,9 @@ export async function POST(request: NextRequest) {
   pptx.company = "Convia";
   pptx.subject = "PowerPoint converted from PDF";
   pptx.title = cleanFileName(input.fileName).replace(/\.pptx$/i, "");
-  pptx.lang = "en-US";
   pptx.theme = {
     headFontFace: "Arial",
     bodyFontFace: "Arial",
-    lang: "en-US",
   };
 
   let totalShapes = 0;
@@ -143,7 +141,7 @@ export async function POST(request: NextRequest) {
           italic: shape.italic === true,
           margin: 0,
           breakLine: false,
-          valign: "mid",
+          valign: "mid" as any,
           fit: "shrink",
           paraSpaceAfterPt: 0,
         });

@@ -1,0 +1,170 @@
+/* CONVIA PREMIUM TOOL HEADER SYSTEM — scoped to tool headers and announcement bar */
+:root {
+  --cv-tool-ink: #17213f;
+  --cv-tool-muted: #687590;
+  --cv-tool-purple: #6258e8;
+  --cv-tool-blue: #2784dc;
+}
+
+/* Announcement strip: keep the three brand phrases visibly separated. */
+.cv5-announcement-bar {
+  display: block !important; width: 100% !important; min-height: 34px !important; padding: 0 !important;
+  box-sizing: border-box !important; background: #151d39 !important; color: #e5eaff !important;
+  font-family: Inter, Arial, sans-serif !important; font-size: 11px !important; line-height: 1.25 !important;
+}
+.cv5-announcement-inner {
+  display: flex !important; flex-direction: row !important; align-items: center !important;
+  justify-content: space-between !important; gap: 18px !important;
+  width: min(1440px, calc(100% - 48px)) !important; min-height: 34px !important; margin: 0 auto !important;
+}
+.cv5-announcement-lead, .cv5-announcement-trail {
+  display: inline-flex !important; flex: 0 1 auto !important; align-items: center !important;
+  gap: 9px !important; min-width: 0 !important; white-space: nowrap !important;
+}
+.cv5-announcement-lead { color: #e9edff !important; font-weight: 650 !important; }
+.cv5-announcement-lead i {
+  display: inline-block !important; flex: 0 0 7px !important; width: 7px !important; height: 7px !important;
+  border-radius: 50% !important; background: #59dbaf !important; box-shadow: 0 0 0 4px rgba(89,219,175,.14) !important;
+}
+.cv5-announcement-trail { margin-left: auto !important; color: #cbd5f1 !important; gap: 0 !important; }
+.cv5-announcement-trail b {
+  display: inline-block !important; margin-left: 13px !important; padding-left: 13px !important;
+  border-left: 1px solid rgba(221,229,255,.28) !important; color: #fff !important;
+  font-weight: 850 !important; letter-spacing: .015em !important;
+}
+
+/* Legacy announcement markup used by earlier Convia header versions. */
+.announcement-bar {
+  display: flex !important; flex-direction: row !important; align-items: center !important;
+  justify-content: space-between !important; flex-wrap: nowrap !important; gap: 18px !important;
+  min-height: 34px !important; padding: 6px max(24px, calc((100vw - 1440px) / 2)) !important;
+  box-sizing: border-box !important; background: #151d39 !important; color: #e5eaff !important;
+  font-family: Inter, Arial, sans-serif !important; font-size: 11px !important; line-height: 1.25 !important;
+}
+.announcement-bar > span:first-child { display: inline-flex !important; align-items: center !important; gap: 9px !important; white-space: nowrap !important; }
+.announcement-bar .announcement-right {
+  display: inline-flex !important; align-items: center !important; gap: 0 !important;
+  margin-left: auto !important; white-space: nowrap !important; color: #cbd5f1 !important;
+}
+.announcement-bar .announcement-right b {
+  margin-left: 13px !important; padding-left: 13px !important;
+  border-left: 1px solid rgba(221,229,255,.28) !important; color: #fff !important;
+}
+
+/* Single centered premium header shared by all PDF tools. */
+.cv-tool-header {
+  position: relative !important; z-index: 30 !important; isolation: isolate !important;
+  display: block !important; width: 100% !important; min-height: 148px !important;
+  margin: 0 !important; padding: 0 !important; overflow: hidden !important; border: 0 !important;
+  color: #fff !important; background: linear-gradient(112deg, #252c77 0%, #5145c9 36%, #286fca 72%, #1a9fc0 100%) !important;
+  box-shadow: 0 14px 32px rgba(36, 55, 135, .16) !important;
+}
+.cv-tool-header::before {
+  position: absolute; z-index: -2; inset: -30%; content: "";
+  background: linear-gradient(115deg, rgba(255,255,255,0) 18%, rgba(255,255,255,.16) 38%, rgba(255,255,255,0) 54%, rgba(123,224,255,.13) 75%, rgba(255,255,255,0) 88%);
+  background-size: 220% 220%; animation: cv-tool-gradient-flow 13s ease-in-out infinite; pointer-events: none;
+}
+.cv-tool-header::after {
+  position: absolute; z-index: -1; top: -150px; left: 50%; width: 680px; height: 360px;
+  content: ""; transform: translateX(-50%); border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(167,179,255,.23), rgba(167,179,255,0) 68%); pointer-events: none;
+}
+.cv-tool-header-glow {
+  position: absolute; z-index: -1; width: 260px; height: 260px; border-radius: 50%;
+  filter: blur(48px); opacity: .25; pointer-events: none;
+  animation: cv-tool-glow-drift 11s ease-in-out infinite alternate;
+}
+.cv-tool-header-glow-a { top: -160px; left: 8%; background: #71e6ff; }
+.cv-tool-header-glow-b { right: 12%; bottom: -190px; background: #c58bff; animation-delay: -4s; }
+.cv-tool-header-grid {
+  position: absolute; z-index: -1; inset: 0; opacity: .12;
+  background-image: linear-gradient(rgba(255,255,255,.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.2) 1px, transparent 1px);
+  background-size: 44px 44px; mask-image: linear-gradient(90deg, transparent, #000 20%, #000 80%, transparent); pointer-events: none;
+}
+.cv-tool-header-inner {
+  position: relative !important; display: grid !important; place-items: center !important;
+  width: min(1440px, calc(100% - 48px)) !important; min-height: 148px !important;
+  margin: 0 auto !important; padding: 21px 92px !important; box-sizing: border-box !important;
+}
+.cv-tool-header-copy {
+  display: flex !important; flex-direction: column !important; align-items: center !important;
+  justify-content: center !important; width: 100% !important; max-width: 900px !important; text-align: center !important;
+}
+.cv-tool-header-eyebrow {
+  display: inline-flex !important; align-items: center !important; justify-content: center !important;
+  gap: 7px !important; margin: 0 0 7px !important; color: rgba(239,244,255,.84) !important;
+  font: 850 9px/1.2 Inter, Arial, sans-serif !important; letter-spacing: .18em !important; text-transform: uppercase !important;
+}
+.cv-tool-header-title-row { display: flex !important; align-items: center !important; justify-content: center !important; gap: 10px !important; min-width: 0 !important; }
+.cv-tool-header-title-icon { flex: 0 0 auto !important; color: rgba(255,255,255,.9) !important; filter: drop-shadow(0 2px 7px rgba(8,16,65,.2)); }
+.cv-tool-header h1 {
+  margin: 0 !important; padding: 0 !important; color: #fff !important;
+  font: 900 clamp(25px, 3vw, 36px)/1.12 Inter, Manrope, Arial, sans-serif !important;
+  letter-spacing: -.045em !important; text-align: center !important; text-shadow: 0 2px 14px rgba(7,15,58,.16) !important;
+}
+.cv-tool-header-tagline {
+  max-width: 760px !important; margin: 8px auto 0 !important; padding: 0 !important;
+  color: rgba(242,246,255,.88) !important; font: 500 13px/1.5 Inter, Arial, sans-serif !important;
+  letter-spacing: .005em !important; text-align: center !important;
+}
+.cv-tool-header-back {
+  position: absolute !important; top: 50% !important; right: 0 !important;
+  display: inline-flex !important; align-items: center !important; justify-content: center !important;
+  gap: 7px !important; min-width: 42px !important; min-height: 42px !important; padding: 0 13px !important;
+  transform: translateY(-50%) !important; border: 1px solid rgba(255,255,255,.34) !important;
+  border-radius: 13px !important; background: rgba(255,255,255,.13) !important; color: #fff !important;
+  box-shadow: 0 6px 18px rgba(13,22,75,.12) !important; backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important; font: 750 11px/1 Inter, Arial, sans-serif !important;
+  text-decoration: none !important; white-space: nowrap !important;
+  transition: background .2s ease, transform .2s ease, border-color .2s ease !important;
+}
+.cv-tool-header-back:hover { border-color: rgba(255,255,255,.6) !important; background: rgba(255,255,255,.24) !important; transform: translateY(calc(-50% - 2px)) !important; }
+.cv-tool-header-back:focus-visible { outline: 3px solid rgba(255,255,255,.55) !important; outline-offset: 3px !important; }
+
+/* The nested layout provides the one canonical header above each route. */
+.cv-pdf-route-content .cv-tool-header,
+.cv-pdf-route-content .tool-page-hero { display: none !important; }
+
+/* Remove the old standalone page banners on original tools; keep their upload/workspace UI. */
+.cv-pdf-route-content[data-tool="merge"] > div > header:first-of-type,
+.cv-pdf-route-content[data-tool="split"] > div > header:first-of-type,
+.cv-pdf-route-content[data-tool="extract"] > div > header:first-of-type,
+.cv-pdf-route-content[data-tool="organize"] > div > header:first-of-type,
+.cv-pdf-route-content[data-tool="watermark"] > main > header:first-of-type,
+.cv-pdf-route-content[data-tool="watermark"] > header:first-of-type,
+.cv-pdf-route-content[data-tool="merge"] > div > main > div.text-center,
+.cv-pdf-route-content[data-tool="watermark"] > main > a:first-child { display: none !important; }
+
+@keyframes cv-tool-gradient-flow {
+  0% { background-position: 0% 48%; transform: translateX(-2%); }
+  50% { background-position: 100% 52%; transform: translateX(2%); }
+  100% { background-position: 0% 48%; transform: translateX(-2%); }
+}
+@keyframes cv-tool-glow-drift {
+  from { transform: translate3d(-8px, 0, 0) scale(.96); opacity: .18; }
+  to { transform: translate3d(16px, 12px, 0) scale(1.08); opacity: .32; }
+}
+
+@media (max-width: 720px) {
+  .cv-tool-header, .cv-tool-header-inner { min-height: 132px !important; }
+  .cv-tool-header-inner { width: calc(100% - 24px) !important; padding: 18px 52px !important; }
+  .cv-tool-header h1 { font-size: clamp(22px, 6vw, 29px) !important; }
+  .cv-tool-header-tagline { margin-top: 6px !important; font-size: 11px !important; line-height: 1.4 !important; }
+  .cv-tool-header-eyebrow { font-size: 8px !important; letter-spacing: .14em !important; }
+  .cv-tool-header-title-icon { width: 18px !important; height: 18px !important; }
+  .cv-tool-header-back { right: 0 !important; width: 40px !important; min-width: 40px !important; height: 40px !important; padding: 0 !important; border-radius: 12px !important; }
+  .cv-tool-header-back span { display: none !important; }
+  .cv5-announcement-inner { width: calc(100% - 20px) !important; flex-wrap: wrap !important; justify-content: center !important; gap: 4px 16px !important; padding: 5px 0 !important; }
+  .cv5-announcement-lead, .cv5-announcement-trail { font-size: 9px !important; }
+  .announcement-bar { flex-wrap: wrap !important; justify-content: center !important; gap: 5px 16px !important; padding: 6px 10px !important; }
+  .announcement-bar .announcement-right { margin-left: 0 !important; font-size: 9px !important; }
+}
+@media (max-width: 390px) {
+  .cv-tool-header-inner { padding-inline: 44px !important; }
+  .cv-tool-header-title-row { gap: 6px !important; }
+  .cv-tool-header-tagline { max-width: 260px !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cv-tool-header::before, .cv-tool-header-glow { animation: none !important; }
+  .cv-tool-header-back { transition: none !important; }
+}

@@ -1,1 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#19c9ed"/><stop offset=".55" stop-color="#2563eb"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs><rect width="64" height="64" rx="18" fill="url(#g)"/><path d="M42 17a17 17 0 1 0 0 30" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/><path d="M29 24h12l7 7v15H29z" fill="#fff"/><path d="M41 24v7h7" fill="#dce8ff"/><path d="M32 38c3-8 5 8 8 0 3-8 5 8 8 0" fill="none" stroke="#df3d43" stroke-width="2.5" stroke-linecap="round"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72">
+  <defs><linearGradient id="m" x1="8" y1="8" x2="64" y2="64" gradientUnits="userSpaceOnUse"><stop stop-color="#19c7e8"/><stop offset=".48" stop-color="#3479e7"/><stop offset="1" stop-color="#783de0"/></linearGradient><linearGradient id="a" x1="19" y1="52" x2="56" y2="58" gradientUnits="userSpaceOnUse"><stop stop-color="#20b9e8"/><stop offset="1" stop-color="#7a3ee6"/></linearGradient></defs>
+  <rect x="1" y="1" width="70" height="70" rx="18" fill="#f6f8ff"/>
+  <path d="M55.2 17.2A25 25 0 1 0 55 54.9" fill="none" stroke="url(#m)" stroke-width="10" stroke-linecap="round"/>
+  <path d="M28 18.5h17.2L55 28.3v28.2H28a5 5 0 0 1-5-5V23.5a5 5 0 0 1 5-5Z" fill="#fff" stroke="#d8e4fa" stroke-width="1.8"/>
+  <path d="M45.2 18.5v10H55" fill="#e9f1ff" stroke="#d8e4fa" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M31.5 36.5H47M31.5 43.5h17M31.5 50.5h11" stroke="url(#a)" stroke-width="3.4" stroke-linecap="round"/>
+</svg>

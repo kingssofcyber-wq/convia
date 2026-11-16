@@ -1,3 +1,4 @@
+import * as React from "react";
 import type { CSSProperties } from "react";
 
 type ConviaLogoProps = {
@@ -8,6 +9,59 @@ type ConviaLogoProps = {
   style?: CSSProperties;
 };
 
+type ConviaMarkProps = {
+  className?: string;
+  size?: number;
+};
+
+function safeId(value: string) {
+  return value.replace(/[^a-zA-Z0-9_-]/g, "");
+}
+
+/** Lightweight inline SVG mark. It does not depend on an external PNG path. */
+export function ConviaMark({ className = "", size = 28 }: ConviaMarkProps) {
+  const id = safeId(React.useId());
+  const gradientId = `convia-mark-gradient-${id}`;
+  const accentId = `convia-mark-accent-${id}`;
+
+  return (
+    <svg
+      className={className}
+      width={size}
+      height={size}
+      viewBox="0 0 72 72"
+      role="img"
+      aria-label="Convia mark"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <defs>
+        <linearGradient id={gradientId} x1="8" y1="8" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#19C7E8" />
+          <stop offset=".48" stopColor="#3479E7" />
+          <stop offset="1" stopColor="#783DE0" />
+        </linearGradient>
+        <linearGradient id={accentId} x1="19" y1="52" x2="56" y2="58" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#20B9E8" />
+          <stop offset="1" stopColor="#7A3EE6" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M55.2 17.2A25 25 0 1 0 55 54.9"
+        fill="none"
+        stroke={`url(#${gradientId})`}
+        strokeWidth="10"
+        strokeLinecap="round"
+      />
+      <path d="M28 18.5h17.2L55 28.3v28.2H28a5 5 0 0 1-5-5V23.5a5 5 0 0 1 5-5Z" fill="#fff" stroke="#D8E4FA" strokeWidth="1.8" />
+      <path d="M45.2 18.5v10H55" fill="#E9F1FF" stroke="#D8E4FA" strokeWidth="1.5" strokeLinejoin="round" />
+      <path d="M31.5 36.5h15.5M31.5 43.5h17M31.5 50.5h11" stroke={`url(#${accentId})`} strokeWidth="3.4" strokeLinecap="round" />
+      <circle cx="58.8" cy="13.5" r="3.2" fill="#19C7E8" />
+      <circle cx="62.8" cy="58.5" r="2.4" fill="#783DE0" />
+    </svg>
+  );
+}
+
+/** Shared logo for the site header, footer, and all PDF workspace headers. */
 export function ConviaLogo({
   variant = "default",
   tagline = false,
@@ -15,27 +69,48 @@ export function ConviaLogo({
   className = "",
   style,
 }: ConviaLogoProps) {
-  const wordColor = variant === "inverse" ? "#ffffff" : "#172447";
-  const taglineColor = variant === "inverse" ? "#cbd5f4" : "#64708a";
-  const height = compact ? 42 : tagline ? 68 : 48;
+  const id = safeId(React.useId());
+  const markGradient = `convia-word-mark-${id}`;
+  const wordGradient = `convia-word-gradient-${id}`;
+  const inverse = variant === "inverse";
+  const height = compact ? 44 : tagline ? 66 : 50;
+  const viewBox = tagline ? "0 0 370 94" : "0 0 320 76";
+
   return (
-    <span className={`convia-logo convia-logo-${variant} ${className}`} style={{ height, ...style }}>
-      <svg viewBox={tagline ? "0 0 520 108" : "0 0 520 74"} role="img" aria-label="Convia — PDF Tools, Smart Solutions, Endless Possibilities">
+    <span
+      className={`convia-logo convia-logo-${variant} ${compact ? "convia-logo-compact" : ""} ${tagline ? "convia-logo-with-tagline" : ""} ${className}`.trim()}
+      style={{ height, ...style }}
+    >
+      <svg viewBox={viewBox} role="img" aria-label="Convia — Every need, one place" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <linearGradient id="conviaMark" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#18c7eb"/><stop offset=".52" stopColor="#2767e8"/><stop offset="1" stopColor="#7b3fe4"/></linearGradient>
-          <linearGradient id="conviaWord" x1="0" y1="0" x2="1" y2="0"><stop stopColor="#137edb"/><stop offset=".54" stopColor="#4d56d9"/><stop offset="1" stopColor="#803be2"/></linearGradient>
-          <linearGradient id="conviaOrbit" x1="0" y1="0" x2="1" y2="0"><stop stopColor="#ffc02a"/><stop offset="1" stopColor="#ff7429"/></linearGradient>
+          <linearGradient id={markGradient} x1="5" y1="5" x2="70" y2="70" gradientUnits="userSpaceOnUse">
+            <stop stopColor="#19C7E8" />
+            <stop offset=".5" stopColor="#3479E7" />
+            <stop offset="1" stopColor="#783DE0" />
+          </linearGradient>
+          <linearGradient id={wordGradient} x1="88" y1="0" x2="305" y2="0" gradientUnits="userSpaceOnUse">
+            <stop stopColor="#168DE6" />
+            <stop offset=".55" stopColor="#4D5BE0" />
+            <stop offset="1" stopColor="#803DE2" />
+          </linearGradient>
         </defs>
-        <g transform="translate(5 4)">
-          <path d="M50 10a28 28 0 1 0 0 52" fill="none" stroke="url(#conviaMark)" strokeWidth="13" strokeLinecap="round"/>
-          <path d="M43 23h18l10 10v25H43z" fill="#fff" stroke="#cddcff" strokeWidth="1.8"/>
-          <path d="M61 23v10h10" fill="#dceaff"/>
-          <path d="M48 43c4-11 8 11 12 0 4-11 8 11 12 0" fill="none" stroke="#e3383a" strokeWidth="2.8" strokeLinecap="round"/>
-          <ellipse cx="47" cy="48" rx="47" ry="14" transform="rotate(-18 47 48)" fill="none" stroke="url(#conviaOrbit)" strokeWidth="5.2"/>
+        <g transform="translate(2 3)">
+          <path d="M55.2 17.2A25 25 0 1 0 55 54.9" fill="none" stroke={`url(#${markGradient})`} strokeWidth="10" strokeLinecap="round" />
+          <path d="M28 18.5h17.2L55 28.3v28.2H28a5 5 0 0 1-5-5V23.5a5 5 0 0 1 5-5Z" fill="#fff" stroke="#D8E4FA" strokeWidth="1.8" />
+          <path d="M45.2 18.5v10H55" fill="#E9F1FF" stroke="#D8E4FA" strokeWidth="1.5" strokeLinejoin="round" />
+          <path d="M31.5 36.5h15.5M31.5 43.5h17M31.5 50.5h11" stroke={`url(#${wordGradient})`} strokeWidth="3.4" strokeLinecap="round" />
+          <path d="M14 52.5c7.5 11.5 24 14.8 37.5 7.4" fill="none" stroke={`url(#${markGradient})`} strokeWidth="4" strokeLinecap="round" />
+          <circle cx="58.8" cy="13.5" r="3.2" fill="#19C7E8" />
         </g>
-        <text x="105" y={tagline ? "55" : "54"} fill="url(#conviaWord)" fontSize={compact ? "48" : "52"} fontWeight="800" letterSpacing="-2.6" fontFamily="Inter,Arial,sans-serif">convia</text>
-        {tagline && <text x="109" y="84" fill={taglineColor} fontSize="12.5" fontWeight="700" letterSpacing="1.05" fontFamily="Inter,Arial,sans-serif">PDF TOOLS  •  SMART SOLUTIONS  •  ENDLESS POSSIBILITIES</text>}
+        <text x="82" y="54" fill={inverse ? "#FFFFFF" : `url(#${wordGradient})`} fontFamily="Inter, Manrope, Arial, sans-serif" fontSize="43" fontWeight="850" letterSpacing="-2.5">convia<tspan fill={inverse ? "#8EDFFF" : "#783DE0"}>.</tspan></text>
+        {tagline && (
+          <text x="86" y="79" fill={inverse ? "#C5D0EA" : "#6E7892"} fontFamily="Inter, Arial, sans-serif" fontSize="7.8" fontWeight="800" letterSpacing=".55">
+            PDF TOOLS  •  SMART SOLUTIONS  •  ENDLESS POSSIBILITIES
+          </text>
+        )}
       </svg>
     </span>
   );
 }
+
+export default ConviaLogo;

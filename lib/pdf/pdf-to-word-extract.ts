@@ -188,7 +188,7 @@ async function loadTesseractWorker(language: PdfOcrLanguage, onProgress: PdfWord
       if (message.status === "recognizing text" && typeof message.progress === "number") {
         const pageFraction = Math.max(0, Math.min(1, message.progress));
         const overall = ((getPageIndex() + pageFraction) / totalPages) * 84;
-        onProgress(Math.round(8 + overall), `OCR reading scanned page ${pageIndex + 1} of ${totalPages}`);
+        onProgress(Math.round(8 + overall), `OCR reading scanned page ${getPageIndex() + 1} of ${totalPages}`);
       }
     },
   });

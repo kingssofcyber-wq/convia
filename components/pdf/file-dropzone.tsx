@@ -36,7 +36,7 @@ export function FileDropzone({
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: acceptConfig,
+    accept: acceptConfig as unknown as import("react-dropzone").Accept,
     maxFiles: maxFiles - files.length,
     disabled: files.length >= maxFiles,
   });

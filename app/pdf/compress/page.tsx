@@ -72,7 +72,8 @@ async function createFirstPagePreview(file: File): Promise<{ previewUrl: string;
 
     canvas.width = Math.ceil(viewport.width);
     canvas.height = Math.ceil(viewport.height);
-    await page.render({ canvasContext: context, viewport }).promise;
+    await page.render({ canvas: canvas,
+        canvasContext: context, viewport }).promise;
     const previewBlob = await new Promise<Blob>((resolve, reject) => {
       canvas.toBlob((blob) => (blob ? resolve(blob) : reject(new Error("Could not create the PDF preview."))), "image/jpeg", 0.88);
     });
@@ -107,7 +108,6 @@ async function rasterizePdfToJpegPdf(
   const inputBytes = new Uint8Array(await file.arrayBuffer());
   const loadingTask = pdfjs.getDocument({
     data: inputBytes,
-    isEvalSupported: false,
   });
 
   try {
@@ -142,6 +142,7 @@ async function rasterizePdfToJpegPdf(
       context.fillStyle = "#ffffff";
       context.fillRect(0, 0, canvas.width, canvas.height);
       await sourcePage.render({
+        canvas: canvas,
         canvasContext: context,
         viewport,
         background: "rgb(255,255,255)",

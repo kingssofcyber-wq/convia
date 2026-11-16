@@ -224,7 +224,7 @@ export function AnnotatePdfWorkspace() {
         }
       }
       const bytes = await pdf.save({ useObjectStreams: true });
-      download(new Blob([bytes], { type: "application/pdf" }), `${file.name.replace(/\.pdf$/i, "")}-annotated.pdf`);
+      download(new Blob([new Uint8Array(bytes).buffer as ArrayBuffer], { type: "application/pdf" }), `${file.name.replace(/\.pdf$/i, "")}-annotated.pdf`);
       setSuccess(`Saved ${marks.length} markup item(s) across ${new Set(marks.map((mark) => mark.page)).size} page(s).`);
     } catch (cause) { setError(cause instanceof Error ? cause.message : "Could not save the annotated PDF."); }
     finally { setSaving(false); }

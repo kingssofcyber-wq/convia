@@ -1,18 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 156" role="img" aria-labelledby="title desc">
-<title id="title">Convia</title><desc id="desc">Convia — PDF Tools, Smart Solutions, Endless Possibilities</desc>
-<defs>
-  <linearGradient id="cgrad" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#16c8f2"/><stop offset=".48" stop-color="#2563eb"/><stop offset="1" stop-color="#7c3aed"/></linearGradient>
-  <linearGradient id="wordgrad" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#1689e8"/><stop offset=".55" stop-color="#5150e8"/><stop offset="1" stop-color="#7c3aed"/></linearGradient>
-  <linearGradient id="orbit" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ffb21d"/><stop offset="1" stop-color="#ff6b22"/></linearGradient>
-</defs>
-<g transform="translate(8 10)">
-  <path d="M105 22a55 55 0 1 0 0 96" fill="none" stroke="url(#cgrad)" stroke-width="25" stroke-linecap="round"/>
-  <path d="M85 45h35l20 20v51H85z" fill="#fff" stroke="#d6e4ff" stroke-width="3"/>
-  <path d="M120 45v21h20" fill="#dceaff"/>
-  <path d="M97 78c8-18 16 18 23 0 7-18 17 18 24 0" fill="none" stroke="#e53935" stroke-width="5" stroke-linecap="round"/>
-  <rect x="96" y="93" width="39" height="16" rx="4" fill="#e53935"/><text x="115.5" y="105" fill="#fff" font-size="10" font-family="Arial,sans-serif" font-weight="800" text-anchor="middle">PDF</text>
-  <ellipse cx="88" cy="91" rx="82" ry="25" transform="rotate(-17 88 91)" fill="none" stroke="url(#orbit)" stroke-width="10"/>
-</g>
-<text x="205" y="91" fill="url(#wordgrad)" font-size="82" font-weight="800" letter-spacing="-5" font-family="Inter,Arial,sans-serif">convia</text>
-<text x="213" y="126" fill="currentColor" font-size="17" font-weight="700" letter-spacing="2.2" font-family="Inter,Arial,sans-serif">PDF TOOLS  •  SMART SOLUTIONS  •  ENDLESS POSSIBILITIES</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 370 94" role="img" aria-label="Convia — Every need, one place">
+  <defs><linearGradient id="mark" x1="5" y1="5" x2="70" y2="70" gradientUnits="userSpaceOnUse"><stop stop-color="#19c7e8"/><stop offset=".5" stop-color="#3479e7"/><stop offset="1" stop-color="#783de0"/></linearGradient><linearGradient id="word" x1="88" y1="0" x2="305" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#168de6"/><stop offset=".55" stop-color="#4d5be0"/><stop offset="1" stop-color="#803de2"/></linearGradient></defs>
+  <g transform="translate(2 3)"><path d="M55.2 17.2A25 25 0 1 0 55 54.9" fill="none" stroke="url(#mark)" stroke-width="10" stroke-linecap="round"/><path d="M28 18.5h17.2L55 28.3v28.2H28a5 5 0 0 1-5-5V23.5a5 5 0 0 1 5-5Z" fill="#fff" stroke="#d8e4fa" stroke-width="1.8"/><path d="M45.2 18.5v10H55" fill="#e9f1ff" stroke="#d8e4fa" stroke-width="1.5" stroke-linejoin="round"/><path d="M31.5 36.5H47M31.5 43.5h17M31.5 50.5h11" stroke="url(#word)" stroke-width="3.4" stroke-linecap="round"/><path d="M14 52.5c7.5 11.5 24 14.8 37.5 7.4" fill="none" stroke="url(#mark)" stroke-width="4" stroke-linecap="round"/><circle cx="58.8" cy="13.5" r="3.2" fill="#19c7e8"/></g>
+  <text x="82" y="54" fill="url(#word)" font-family="Inter,Manrope,Arial,sans-serif" font-size="43" font-weight="850" letter-spacing="-2.5">convia<tspan fill="#783de0">.</tspan></text>
+  <text x="86" y="79" fill="#6e7892" font-family="Inter,Arial,sans-serif" font-size="7.8" font-weight="800" letter-spacing=".55">PDF TOOLS  •  SMART SOLUTIONS  •  ENDLESS POSSIBILITIES</text>
 </svg>
